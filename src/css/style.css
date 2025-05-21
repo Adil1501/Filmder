@@ -24,13 +24,16 @@ body {
   gap: 10px; /* Ruimte tussen de elementen */
   flex-wrap: wrap; /* Zorgt ervoor dat elementen ombreken op kleinere schermen */
   justify-content: center; /* Centreert de elementen in de container */
+  width: 100%; /* Zorgt ervoor dat de container de beschikbare breedte benut */
+  max-width: 1000px; /* Maximale breedte voor consistentie */
 }
 
 /* Inputveld voor zoekopdrachten */
 #search-input {
   padding: 10px;
   font-size: 16px;
-  width: 300px;
+  flex-grow: 1; /* Laat de input meegroeien in de beschikbare ruimte */
+  min-width: 200px; /* Minimale breedte voor de input */
   border-radius: 5px;
   border: 1px solid #ccc;
 }
@@ -51,7 +54,6 @@ body {
 .search-container select:hover {
   background-color: #d0d0d0;
 }
-
 
 /* Algemene container voor films (zowel zoekresultaten als favorieten) */
 .movie-container {
@@ -131,4 +133,68 @@ h2 {
     margin-top: 40px; /* Ruimte boven de heading */
     margin-bottom: 20px; /* Ruimte onder de heading */
     color: #333;
+}
+
+/* Styling voor het feedbackgebied */
+.message-area {
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Styling voor success- en errorberichten */
+.message-area.success {
+    color: #28a745; /* Groen voor succes */
+}
+
+.message-area.error {
+    color: #dc3545; /* Rood voor fouten */
+}
+
+/* Media queries voor responsiviteit */
+@media (max-width: 768px) {
+  .search-container {
+    flex-direction: column; /* Stapel elementen verticaal op kleinere schermen */
+    align-items: center; /* Centreer elementen */
+  }
+
+  #search-input {
+    width: 90%; /* Meer breedte op kleinere schermen */
+    max-width: 350px;
+  }
+
+  .movie-container {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* Kleinere kolommen op kleinere schermen */
+  }
+
+  .movie img {
+    height: 250px; /* Pas hoogte van afbeeldingen aan */
+  }
+}
+
+@media (max-width: 480px) {
+  .movie-container {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+
+  .movie img {
+    height: 200px;
+  }
+
+  .movie h3 {
+    font-size: 16px;
+  }
+
+  .movie p {
+    font-size: 12px;
+  }
+
+  .movie button {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
 }
