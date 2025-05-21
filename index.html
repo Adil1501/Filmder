@@ -1,23 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Filmder</title>
     <link rel="stylesheet" href="/src/css/style.css" />
-    <a href="favorites.html">📁 Mijn Favorieten</a>
   </head>
   <body>
     <div class="search-container">
-      <input 
-        type="text" 
-        id="search-input" 
-        placeholder="Zoek films..." 
+      <input
+        type="text"
+        id="search-input"
+        placeholder="Zoek films..."
       />
       <button id="search-button">Zoek</button>
       <select id="genre-select">
         <option value="">Alle genres</option>
-      </select>      
+      </select>
       <select id="sort-select">
         <option value="">Sorteer op...</option>
         <option value="release_desc">Nieuwste eerst</option>
@@ -28,6 +27,9 @@
     </div>
 
     <div id="movie-container" class="movie-container"></div>
+
+    <h2>Mijn Favorieten</h2>
+    <div id="favorites-container" class="movie-container"></div>
 
     <script type="module" src="/src/js/main.js"></script>
   </body>

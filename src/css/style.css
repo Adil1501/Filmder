@@ -1,11 +1,11 @@
-/* Algemene reset */
+/* Algemene reset voor alle elementen */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Body styling */
+/* Basisstyling voor de body */
 body {
   font-family: Arial, sans-serif;
   background-color: #f5f5f5;
@@ -14,13 +14,19 @@ body {
   align-items: center;
   min-height: 100vh;
   flex-direction: column;
+  padding: 20px; /* Wat extra padding rondom de inhoud */
 }
 
-/* Zoekbalk styling */
+/* Styling voor de zoek- en filterbalk */
 .search-container {
   margin-bottom: 20px;
+  display: flex; /* Maakt de elementen op één lijn */
+  gap: 10px; /* Ruimte tussen de elementen */
+  flex-wrap: wrap; /* Zorgt ervoor dat elementen ombreken op kleinere schermen */
+  justify-content: center; /* Centreert de elementen in de container */
 }
 
+/* Inputveld voor zoekopdrachten */
 #search-input {
   padding: 10px;
   font-size: 16px;
@@ -29,37 +35,100 @@ body {
   border: 1px solid #ccc;
 }
 
-/* Movie container styling */
-.movie-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
-  width: 80%;
-  max-width: 1000px;
-  margin-top: 20px;
+/* Styling voor knoppen en selectboxen */
+.search-container button,
+.search-container select {
+  padding: 10px 15px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #e0e0e0;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Vloeiende overgang bij hover */
 }
 
+.search-container button:hover,
+.search-container select:hover {
+  background-color: #d0d0d0;
+}
+
+
+/* Algemene container voor films (zowel zoekresultaten als favorieten) */
+.movie-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsieve kolommen */
+  gap: 20px; /* Ruimte tussen de filmkaarten */
+  width: 100%; /* Volle breedte */
+  max-width: 1000px; /* Maximale breedte voor leesbaarheid */
+  margin-top: 20px;
+  padding: 0 10px; /* Wat horizontale padding */
+}
+
+/* Individuele filmkaart styling */
 .movie {
   background-color: white;
   border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* Zorgt ervoor dat de inhoud binnen de afgeronde hoeken blijft */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtiele schaduw */
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Zorgt ervoor dat alle kaarten dezelfde hoogte hebben */
 }
 
+/* Afbeelding in de filmkaart */
 .movie img {
   width: 100%;
-  height: auto;
+  height: 300px; /* Vaste hoogte voor afbeeldingen */
+  object-fit: cover; /* Zorgt ervoor dat de afbeelding de beschikbare ruimte vult zonder vervorming */
   border-bottom: 2px solid #eee;
 }
 
+/* Titel van de film */
 .movie h3 {
   padding: 10px;
   font-size: 18px;
   font-weight: bold;
+  flex-grow: 1; /* Laat de titel groeien om de resterende ruimte te vullen */
 }
 
+/* Paragrafen (release date, rating) in de filmkaart */
 .movie p {
-  padding: 0 10px 10px;
+  padding: 0 10px;
   font-size: 14px;
   color: #666;
+}
+
+/* Styling voor de favorietenknop */
+.movie button {
+  margin: 10px;
+  padding: 8px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #007bff; /* Blauw voor 'voeg toe' */
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.movie button:hover {
+  background-color: #0056b3;
+}
+
+/* Specifieke styling voor de verwijderknop in favorieten */
+.movie button.remove-favorite {
+    background-color: #dc3545; /* Rood voor 'verwijder' */
+}
+
+.movie button.remove-favorite:hover {
+    background-color: #c82333;
+}
+
+/* Heading voor "Mijn Favorieten" */
+h2 {
+    width: 100%; /* Zorgt ervoor dat de heading de volle breedte inneemt */
+    text-align: center; /* Centreert de tekst */
+    margin-top: 40px; /* Ruimte boven de heading */
+    margin-bottom: 20px; /* Ruimte onder de heading */
+    color: #333;
 }
