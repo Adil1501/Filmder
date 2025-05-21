@@ -16,7 +16,7 @@ const movieContainer = document.getElementById('movie-container');
 const favoritesContainer = document.getElementById('favorites-container');
 const messageArea = document.getElementById('message-area');
 const loadingIndicator = document.getElementById('loading-indicator');
-const mainContent = document.getElementById('main-content');
+const mainContent = document.getElementById('main-content'); // Main tag voor semantiek en toegankelijkheid
 const movieDetailContainer = document.getElementById('movie-detail');
 const detailContent = document.getElementById('detail-content');
 const backToSearchButton = document.getElementById('back-to-search');
@@ -47,8 +47,10 @@ let currentGenreId = '';
 function showLoadingIndicator(show) {
   if (show) {
     loadingIndicator.classList.add('show');
+    loadingIndicator.setAttribute('aria-hidden', 'false');
   } else {
     loadingIndicator.classList.remove('show');
+    loadingIndicator.setAttribute('aria-hidden', 'true');
   }
 }
 
@@ -60,9 +62,11 @@ function showLoadingIndicator(show) {
 function showMessage(message, type = 'info') {
   messageArea.textContent = message;
   messageArea.className = `message-area ${type}`;
+  messageArea.setAttribute('aria-live', 'polite'); // Zorgt ervoor dat screen readers de update voorlezen
   setTimeout(() => {
     messageArea.textContent = '';
     messageArea.className = 'message-area';
+    messageArea.removeAttribute('aria-live');
   }, 3000);
 }
 
@@ -195,17 +199,19 @@ function displayMovies(movies, container, showAddButton) {
     const movieElement = document.createElement('div');
     movieElement.classList.add('movie');
     movieElement.dataset.movieId = movie.id;
+    movieElement.setAttribute('tabindex', '0'); // Maak filmkaarten focusbaar
+    movieElement.setAttribute('role', 'article'); // Semantische rol
 
     const imageUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/500x750?text=Geen+Afbeelding';
     const releaseDate = movie.release_date || 'Onbekend';
     const voteAverage = movie.vote_average ? movie.vote_average.toFixed(1) : 'Onbekend';
 
     movieElement.innerHTML = `
-      <img src="${imageUrl}" alt="${movie.title}" onerror="this.onerror=null; this.src='https://via.placeholder.com/500x750?text=Afbeelding+niet+gevonden';" />
+      <img src="${imageUrl}" alt="Poster voor ${movie.title}" onerror="this.onerror=null; this.src='https://via.placeholder.com/500x750?text=Afbeelding+niet+gevonden';" />
       <h3>${movie.title}</h3>
       <p>Release: ${releaseDate}</p>
       <p>Beoordeling: ${voteAverage}</p>
-      ${showAddButton ? '<button class="add-favorite">➕ Favoriet</button>' : '<button class="remove-favorite">🗑 Verwijder</button>'}
+      ${showAddButton ? `<button class="add-favorite" aria-label="Voeg ${movie.title} toe aan favorieten">➕ Favoriet</button>` : `<button class="remove-favorite" aria-label="Verwijder ${movie.title} uit favorieten">🗑 Verwijder</button>`}
     `;
 
     const favoriteButton = movieElement.querySelector('.add-favorite') || movieElement.querySelector('.remove-favorite');
@@ -220,6 +226,13 @@ function displayMovies(movies, container, showAddButton) {
       });
     }
 
+    // Voeg keyboard interactie toe voor de filmkaart zelf
+    movieElement.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault(); // Voorkom standaard scrollgedrag voor spatiebalk
+        showMovieDetail(movie.id);
+      }
+    });
     movieElement.addEventListener('click', () => showMovieDetail(movie.id));
     container.appendChild(movieElement);
   });
@@ -330,8 +343,10 @@ function renderFavorites() {
   // Toon of verberg de 'Wis alle favorieten' knop
   if (getFavorites().length > 0) {
       clearFavoritesButton.style.display = 'block';
+      clearFavoritesButton.disabled = false;
   } else {
       clearFavoritesButton.style.display = 'none';
+      clearFavoritesButton.disabled = true;
   }
 
   if (favorites.length === 0 && getFavorites().length > 0) {
@@ -401,13 +416,13 @@ async function showMovieDetail(movieId) {
         const genres = movie.genres && movie.genres.length > 0 ? movie.genres.map(g => g.name).join(', ') : 'Onbekend';
 
         detailContent.innerHTML = `
-            <img src="${imageUrl}" alt="${movie.title}" onerror="this.onerror=null; this.src='https://via.placeholder.com/500x750?text=Afbeelding+niet+gevonden';" />
+            <img src="${imageUrl}" alt="Poster voor ${movie.title}" onerror="this.onerror=null; this.src='https://via.placeholder.com/500x750?text=Afbeelding+niet+gevonden';" />
             <h2>${movie.title}</h2>
             <p><strong>Release:</strong> ${releaseDate}</p>
             <p><strong>Beoordeling:</strong> ${voteAverage}</p>
             <p><strong>Genre(s):</strong> ${genres}</p>
             <p><strong>Samenvatting:</strong> ${overview}</p>
-            <button class="add-favorite" data-movie-id="${movie.id}">➕ Favoriet</button>
+            <button class="add-favorite" data-movie-id="${movie.id}" aria-label="Voeg ${movie.title} toe aan favorieten">➕ Favoriet</button>
         `;
 
         const favorites = getFavorites();
@@ -418,11 +433,13 @@ async function showMovieDetail(movieId) {
             favoriteButton.disabled = true;
             favoriteButton.style.backgroundColor = '#6c757d';
             favoriteButton.style.cursor = 'not-allowed';
+            favoriteButton.setAttribute('aria-disabled', 'true');
         } else {
             favoriteButton.textContent = '➕ Favoriet';
             favoriteButton.disabled = false;
             favoriteButton.style.backgroundColor = '#28a745';
             favoriteButton.style.cursor = 'pointer';
+            favoriteButton.setAttribute('aria-disabled', 'false');
         }
 
         favoriteButton.addEventListener('click', () => {
@@ -431,9 +448,11 @@ async function showMovieDetail(movieId) {
             favoriteButton.disabled = true;
             favoriteButton.style.backgroundColor = '#6c757d';
             favoriteButton.style.cursor = 'not-allowed';
+            favoriteButton.setAttribute('aria-disabled', 'true');
         });
 
         movieDetailContainer.style.display = 'flex';
+        movieDetailContainer.focus(); // Verplaats de focus naar de detailpagina voor screen readers
     } else {
         movieDetailContainer.style.display = 'none';
     }
@@ -445,6 +464,7 @@ async function showMovieDetail(movieId) {
  */
 function hideMovieContainer() {
     movieContainer.style.display = 'none';
+    movieContainer.setAttribute('aria-hidden', 'true');
 }
 
 /**
@@ -452,6 +472,7 @@ function hideMovieContainer() {
  */
 function showMovieContainer() {
     movieContainer.style.display = 'grid';
+    movieContainer.setAttribute('aria-hidden', 'false');
 }
 
 /**
@@ -459,6 +480,7 @@ function showMovieContainer() {
  */
 function hideMovieDetail() {
     movieDetailContainer.style.display = 'none';
+    movieDetailContainer.setAttribute('aria-hidden', 'true');
 }
 
 // Event listener voor de 'Terug naar zoekresultaten' knop
@@ -466,6 +488,7 @@ backToSearchButton.addEventListener('click', () => {
     hideMovieDetail();
     showMovieContainer();
     fetchMovies(currentSearchQuery, currentGenreId, currentPage);
+    searchInput.focus(); // Verplaats focus terug naar zoekveld
 });
 
 // Paginering event listeners
@@ -473,7 +496,7 @@ prevPageButton.addEventListener('click', () => {
     if (currentPage > 1) {
         currentPage--;
         fetchMovies(currentSearchQuery, currentGenreId, currentPage);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll naar boven bij paginawissel
     }
 });
 
@@ -481,7 +504,7 @@ nextPageButton.addEventListener('click', () => {
     if (currentPage < totalPages) {
         currentPage++;
         fetchMovies(currentSearchQuery, currentGenreId, currentPage);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll naar boven bij paginawissel
     }
 });
 
@@ -492,6 +515,9 @@ function updatePaginationControls() {
     pageInfoSpan.textContent = `Pagina ${currentPage} van ${totalPages}`;
     prevPageButton.disabled = currentPage === 1;
     nextPageButton.disabled = currentPage === totalPages;
+
+    prevPageButton.setAttribute('aria-disabled', currentPage === 1);
+    nextPageButton.setAttribute('aria-disabled', currentPage === totalPages);
 }
 
 

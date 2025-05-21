@@ -12,17 +12,23 @@
       <p>Ontdek je volgende favoriete film</p>
     </header>
 
-    <div class="search-container">
+    <div class="search-container" role="search">
+      <label for="search-input" class="sr-only">Zoek films op titel</label>
       <input
         type="text"
         id="search-input"
         placeholder="Zoek films..."
+        aria-label="Zoek films op titel"
       />
-      <button id="search-button">Zoek</button>
-      <select id="genre-select">
+      <button id="search-button" aria-label="Zoek">Zoek</button>
+      
+      <label for="genre-select" class="sr-only">Filter op genre</label>
+      <select id="genre-select" aria-label="Filter op genre">
         <option value="">Alle genres</option>
       </select>
-      <select id="sort-select">
+      
+      <label for="sort-select" class="sr-only">Sorteer zoekresultaten</label>
+      <select id="sort-select" aria-label="Sorteer zoekresultaten">
         <option value="">Sorteer op...</option>
         <option value="release_desc">Nieuwste eerst</option>
         <option value="release_asc">Oudste eerst</option>
@@ -31,31 +37,34 @@
       </select>
     </div>
 
-    <div id="message-area" class="message-area"></div>
-    <div id="loading-indicator" class="loading-indicator">Laden...</div>
+    <div id="message-area" class="message-area" role="status" aria-live="polite"></div>
+    <div id="loading-indicator" class="loading-indicator" role="progressbar" aria-label="Laden van inhoud">Laden...</div>
 
-    <div id="main-content">
-      <div id="movie-container" class="movie-container"></div>
+    <main id="main-content">
+      <section id="movie-container" class="movie-container" aria-label="Film zoekresultaten"></section>
 
-      <div id="pagination-controls" class="pagination-controls" style="display: none;">
-        <button id="prev-page">Vorige</button>
-        <span id="page-info">Pagina 1 van 1</span>
-        <button id="next-page">Volgende</button>
-      </div>
+      <nav id="pagination-controls" class="pagination-controls" aria-label="Paginering voor filmresultaten" style="display: none;">
+        <button id="prev-page" aria-label="Vorige pagina">Vorige</button>
+        <span id="page-info" aria-live="polite">Pagina 1 van 1</span>
+        <button id="next-page" aria-label="Volgende pagina">Volgende</button>
+      </nav>
 
-      <div id="movie-detail" class="movie-detail-container" style="display: none;">
-        <button id="back-to-search">Terug naar zoekresultaten</button>
+      <section id="movie-detail" class="movie-detail-container" aria-label="Film details" style="display: none;">
+        <button id="back-to-search" aria-label="Terug naar zoekresultaten">Terug naar zoekresultaten</button>
         <div id="detail-content" class="detail-content">
           </div>
-      </div>
-    </div>
+      </section>
+    </main>
 
     <hr class="section-divider">
 
-    <h2>Mijn Favorieten</h2>
-    <div class="favorites-filter-sort-container">
-      <input type="text" id="favorites-search-input" placeholder="Zoek in favorieten..." />
-      <select id="favorites-sort-select">
+    <h2 id="favorites-heading">Mijn Favorieten</h2>
+    <div class="favorites-filter-sort-container" aria-labelledby="favorites-heading">
+      <label for="favorites-search-input" class="sr-only">Zoek in favoriete films</label>
+      <input type="text" id="favorites-search-input" placeholder="Zoek in favorieten..." aria-label="Zoek in favoriete films" />
+      
+      <label for="favorites-sort-select" class="sr-only">Sorteer favoriete films</label>
+      <select id="favorites-sort-select" aria-label="Sorteer favoriete films">
         <option value="">Sorteer favorieten op...</option>
         <option value="release_desc">Nieuwste eerst</option>
         <option value="release_asc">Oudste eerst</option>
@@ -64,9 +73,9 @@
       </select>
     </div>
 
-    <button id="clear-favorites-button" class="clear-favorites-button" style="display: none;">🗑 Wis alle favorieten</button>
+    <button id="clear-favorites-button" class="clear-favorites-button" aria-label="Wis alle favoriete films" style="display: none;">🗑 Wis alle favorieten</button>
 
-    <div id="favorites-container" class="movie-container"></div>
+    <section id="favorites-container" class="movie-container" aria-label="Mijn favoriete films"></section>
 
     <script type="module" src="/src/js/main.js"></script>
   </body>
