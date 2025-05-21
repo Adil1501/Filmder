@@ -3,10 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Filmder</title>
+    <title>Filmder - Ontdek je volgende favoriete film</title>
     <link rel="stylesheet" href="/src/css/style.css" />
   </head>
   <body>
+    <header class="app-header">
+      <h1>Filmder</h1>
+      <p>Ontdek je volgende favoriete film</p>
+    </header>
+
     <div class="search-container">
       <input
         type="text"
@@ -32,12 +37,20 @@
     <div id="main-content">
       <div id="movie-container" class="movie-container"></div>
 
+      <div id="pagination-controls" class="pagination-controls" style="display: none;">
+        <button id="prev-page">Vorige</button>
+        <span id="page-info">Pagina 1 van 1</span>
+        <button id="next-page">Volgende</button>
+      </div>
+
       <div id="movie-detail" class="movie-detail-container" style="display: none;">
         <button id="back-to-search">Terug naar zoekresultaten</button>
         <div id="detail-content" class="detail-content">
           </div>
       </div>
     </div>
+
+    <hr class="section-divider">
 
     <h2>Mijn Favorieten</h2>
     <div id="favorites-container" class="movie-container"></div>
