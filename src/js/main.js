@@ -16,7 +16,7 @@ const movieContainer = document.getElementById('movie-container');
 const favoritesContainer = document.getElementById('favorites-container');
 const messageArea = document.getElementById('message-area');
 const loadingIndicator = document.getElementById('loading-indicator');
-const mainContent = document.getElementById('main-content');
+const mainContent = document.getElementById('main-content'); // Niet direct gebruikt, maar kan voor toekomstige lay-out nuttig zijn
 const movieDetailContainer = document.getElementById('movie-detail');
 const detailContent = document.getElementById('detail-content');
 const backToSearchButton = document.getElementById('back-to-search');
@@ -55,6 +55,9 @@ function showMessage(message, type = 'info') {
 async function fetchGenres() {
   try {
     const response = await fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}&language=nl-NL`);
+    if (!response.ok) {
+        throw new Error(`HTTP fout! Status: ${response.status}`);
+    }
     const data = await response.json();
     return data.genres;
   } catch (error) {
@@ -84,6 +87,9 @@ async function fetchMovies(query = '', genreId = '') {
     }
 
     const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error(`HTTP fout! Status: ${response.status}`);
+    }
     const data = await response.json();
     let results = data.results;
 
@@ -126,7 +132,7 @@ async function fetchMovieDetail(movieId) {
         const data = await response.json();
         return data;
     } catch (error) {
-        console.error('Fout bij ophalen filmdetails:', error);
+        console.error(`Fout bij ophalen filmdetails voor ID ${movieId}:`, error);
         showMessage('Kon filmdetails niet laden. Probeer later opnieuw.', 'error');
         return null;
     } finally {
@@ -143,7 +149,7 @@ async function fetchMovieDetail(movieId) {
 function displayMovies(movies, container, showAddButton) {
   container.innerHTML = ''; // Maak de container leeg
 
-  if (movies.length === 0 && showAddButton) { // Alleen een melding voor de zoekresultaten
+  if (movies.length === 0 && showAddButton) {
     container.innerHTML = '<p>Geen films gevonden...</p>';
     return;
   }
@@ -151,27 +157,25 @@ function displayMovies(movies, container, showAddButton) {
   movies.forEach(movie => {
     const movieElement = document.createElement('div');
     movieElement.classList.add('movie');
-    // Voeg een data-attribuut toe voor de film ID
     movieElement.dataset.movieId = movie.id;
 
-    // Gebruik een placeholder afbeelding als poster_path ontbreekt
+    // Controleer op ontbrekende poster en gebruik een placeholder
     const imageUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/500x750?text=Geen+Afbeelding';
     const releaseDate = movie.release_date || 'Onbekend';
     const voteAverage = movie.vote_average ? movie.vote_average.toFixed(1) : 'Onbekend';
 
     movieElement.innerHTML = `
-      <img src="${imageUrl}" alt="${movie.title}" />
+      <img src="${imageUrl}" alt="${movie.title}" onerror="this.onerror=null; this.src='https://via.placeholder.com/500x750?text=Afbeelding+niet+gevonden';" />
       <h3>${movie.title}</h3>
       <p>Release: ${releaseDate}</p>
       <p>Beoordeling: ${voteAverage}</p>
       ${showAddButton ? '<button class="add-favorite">➕ Favoriet</button>' : '<button class="remove-favorite">🗑 Verwijder</button>'}
     `;
 
-    // Voeg event listener toe voor de favorietenknop (voorkom dat klikken op de knop de detailpagina opent)
     const favoriteButton = movieElement.querySelector('.add-favorite') || movieElement.querySelector('.remove-favorite');
     if (favoriteButton) {
       favoriteButton.addEventListener('click', (event) => {
-        event.stopPropagation(); // Voorkom dat de klik doorklikt naar de movieElement
+        event.stopPropagation();
         if (showAddButton) {
           addToFavorites(movie);
         } else {
@@ -180,9 +184,7 @@ function displayMovies(movies, container, showAddButton) {
       });
     }
 
-    // Event listener voor het openen van de detailpagina
     movieElement.addEventListener('click', () => showMovieDetail(movie.id));
-
     container.appendChild(movieElement);
   });
 }
@@ -200,14 +202,14 @@ async function populateGenreDropdown() {
   });
 }
 
-// Event listeners voor zoek-, genre- en sorteerfunctionaliteit
+// Event listeners
 genreSelect.addEventListener('change', () => {
   const query = searchInput.value.trim();
   const genreId = genreSelect.value;
   fetchMovies(query, genreId);
 });
 
-searchInput.addEventListener('input', () => { // Gebruik 'input' voor real-time zoeken
+searchInput.addEventListener('input', () => {
   const query = searchInput.value.trim();
   const genreId = genreSelect.value;
   fetchMovies(query, genreId);
@@ -221,26 +223,24 @@ sortSelect.addEventListener('change', () => {
 
 /**
  * Voegt een film toe aan de favorieten in localStorage.
- * Nu met meer gedetailleerde filminformatie.
  * @param {Object} movie - Het filmobject om toe te voegen.
  */
 function addToFavorites(movie) {
   const favorites = getFavorites();
   const exists = favorites.some(fav => fav.id === movie.id);
   if (!exists) {
-    // Sla meer relevante data op voor de favorieten
     favorites.push({
       id: movie.id,
       title: movie.title,
       poster_path: movie.poster_path,
       release_date: movie.release_date,
       vote_average: movie.vote_average,
-      overview: movie.overview, // Nieuw: opslaan van de samenvatting
-      genre_ids: movie.genre_ids // Nieuw: opslaan van genre-ID's
+      overview: movie.overview,
+      genre_ids: movie.genre_ids
     });
     localStorage.setItem('favorites', JSON.stringify(favorites));
     showMessage(`'${movie.title}' is toegevoegd aan je favorieten!`, 'success');
-    renderFavorites(); // Werk de favorietenlijst bij na toevoegen
+    renderFavorites();
   } else {
     showMessage(`'${movie.title}' staat al in je favorieten.`, 'info');
   }
@@ -258,7 +258,7 @@ function removeFromFavorites(movieId) {
   if (movieToRemove) {
       showMessage(`'${movieToRemove.title}' is verwijderd uit je favorieten.`, 'success');
   }
-  renderFavorites(); // Werk de favorietenlijst bij na verwijderen
+  renderFavorites();
 }
 
 /**
@@ -275,7 +275,6 @@ function getFavorites() {
  */
 function renderFavorites() {
   const favorites = getFavorites();
-  // Gebruik displayMovies om de favorieten weer te geven zonder de "voeg toe" knop
   displayMovies(favorites, favoritesContainer, false);
   if (favorites.length === 0) {
       favoritesContainer.innerHTML = `
@@ -293,13 +292,13 @@ function renderFavorites() {
  */
 function sortMovies(movies, criteria) {
   switch (criteria) {
-    case 'release_desc': // Nieuwste eerst
+    case 'release_desc':
       return movies.sort((a, b) => new Date(b.release_date || '0') - new Date(a.release_date || '0'));
-    case 'release_asc': // Oudste eerst
+    case 'release_asc':
       return movies.sort((a, b) => new Date(a.release_date || '0') - new Date(b.release_date || '0'));
-    case 'rating_desc': // Hoogste beoordeling eerst
+    case 'rating_desc':
       return movies.sort((a, b) => (b.vote_average || 0) - (a.vote_average || 0));
-    case 'rating_asc': // Laagste beoordeling eerst
+    case 'rating_asc':
       return movies.sort((a, b) => (a.vote_average || 0) - (b.vote_average || 0));
     default:
       return movies;
@@ -311,8 +310,8 @@ function sortMovies(movies, criteria) {
  * @param {number} movieId - De ID van de film die getoond moet worden.
  */
 async function showMovieDetail(movieId) {
-    hideMovieContainer(); // Verberg de hoofd filmcontainer
-    showLoadingIndicator(true); // Toon laadindicator
+    hideMovieContainer();
+    showLoadingIndicator(true);
 
     const movie = await fetchMovieDetail(movieId);
 
@@ -321,10 +320,10 @@ async function showMovieDetail(movieId) {
         const releaseDate = movie.release_date || 'Onbekend';
         const voteAverage = movie.vote_average ? movie.vote_average.toFixed(1) : 'Onbekend';
         const overview = movie.overview || 'Geen samenvatting beschikbaar.';
-        const genres = movie.genres ? movie.genres.map(g => g.name).join(', ') : 'Onbekend';
+        const genres = movie.genres && movie.genres.length > 0 ? movie.genres.map(g => g.name).join(', ') : 'Onbekend';
 
         detailContent.innerHTML = `
-            <img src="${imageUrl}" alt="${movie.title}" />
+            <img src="${imageUrl}" alt="${movie.title}" onerror="this.onerror=null; this.src='https://via.placeholder.com/500x750?text=Afbeelding+niet+gevonden';" />
             <h2>${movie.title}</h2>
             <p><strong>Release:</strong> ${releaseDate}</p>
             <p><strong>Beoordeling:</strong> ${voteAverage}</p>
@@ -333,16 +332,37 @@ async function showMovieDetail(movieId) {
             <button class="add-favorite" data-movie-id="${movie.id}">➕ Favoriet</button>
         `;
 
-        // Voeg event listener toe voor de favorietenknop op de detailpagina
-        detailContent.querySelector('.add-favorite').addEventListener('click', () => {
+        // Controleer of de film al in favorieten staat en pas de knoptekst aan
+        const favorites = getFavorites();
+        const isFavorite = favorites.some(fav => fav.id === movie.id);
+        const favoriteButton = detailContent.querySelector('.add-favorite');
+        if (isFavorite) {
+            favoriteButton.textContent = '✔️ Toegevoegd aan favorieten';
+            favoriteButton.disabled = true; // Maak de knop inactief
+            favoriteButton.style.backgroundColor = '#6c757d'; // Grijze kleur voor inactief
+            favoriteButton.style.cursor = 'not-allowed';
+        } else {
+            favoriteButton.textContent = '➕ Favoriet';
+            favoriteButton.disabled = false;
+            favoriteButton.style.backgroundColor = '#28a745';
+            favoriteButton.style.cursor = 'pointer';
+        }
+
+
+        favoriteButton.addEventListener('click', () => {
             addToFavorites(movie);
+            // Update knopstatus direct na toevoegen
+            favoriteButton.textContent = '✔️ Toegevoegd aan favorieten';
+            favoriteButton.disabled = true;
+            favoriteButton.style.backgroundColor = '#6c757d';
+            favoriteButton.style.cursor = 'not-allowed';
         });
 
-        movieDetailContainer.style.display = 'block'; // Toon de detailcontainer
+        movieDetailContainer.style.display = 'flex'; // Toon de detailcontainer als flex
     } else {
-        movieDetailContainer.style.display = 'none'; // Verberg de detailcontainer als film niet gevonden is
+        movieDetailContainer.style.display = 'none';
     }
-    showLoadingIndicator(false); // Verberg laadindicator
+    showLoadingIndicator(false);
 }
 
 /**
@@ -356,7 +376,7 @@ function hideMovieContainer() {
  * Toont de filmcontainer (zoekresultaten).
  */
 function showMovieContainer() {
-    movieContainer.style.display = 'grid'; // Gebruik 'grid' omdat het een grid layout is
+    movieContainer.style.display = 'grid';
 }
 
 /**
@@ -368,9 +388,9 @@ function hideMovieDetail() {
 
 // Event listener voor de 'Terug naar zoekresultaten' knop
 backToSearchButton.addEventListener('click', () => {
-    hideMovieDetail(); // Verberg detailweergave
-    showMovieContainer(); // Toon de zoekresultaten weer
-    // Eventueel de laatst gezochte films opnieuw laden
+    hideMovieDetail();
+    showMovieContainer();
+    // Laad de laatst gezochte/populaire films opnieuw
     const query = searchInput.value.trim();
     const genreId = genreSelect.value;
     fetchMovies(query, genreId);
@@ -378,7 +398,7 @@ backToSearchButton.addEventListener('click', () => {
 
 // Initialiseer de pagina bij het laden
 window.onload = () => {
-  populateGenreDropdown(); // Vul de genre-dropdown
-  fetchMovies(); // Haal de initiële films op (populaire films)
-  renderFavorites(); // Toon de favorieten bij het laden
+  populateGenreDropdown();
+  fetchMovies();
+  renderFavorites();
 };

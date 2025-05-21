@@ -7,120 +7,148 @@
 
 /* Basisstyling voor de body */
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f5f5f5;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Moderne lettertype */
+  background-color: #f0f2f5; /* Zachtere achtergrondkleur */
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
   flex-direction: column;
-  padding: 20px; /* Wat extra padding rondom de inhoud */
+  padding: 20px;
+  color: #333;
 }
 
 /* Styling voor de zoek- en filterbalk */
 .search-container {
-  margin-bottom: 20px;
-  display: flex; /* Maakt de elementen op één lijn */
-  gap: 10px; /* Ruimte tussen de elementen */
-  flex-wrap: wrap; /* Zorgt ervoor dat elementen ombreken op kleinere schermen */
-  justify-content: center; /* Centreert de elementen in de container */
-  width: 100%; /* Zorgt ervoor dat de container de beschikbare breedte benut */
-  max-width: 1000px; /* Maximale breedte voor consistentie */
+  margin-bottom: 25px; /* Meer ruimte onder de zoekbalk */
+  display: flex;
+  gap: 12px; /* Iets meer ruimte tussen elementen */
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 1000px;
+  background-color: #ffffff; /* Witte achtergrond voor de zoekbalk */
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); /* Subtielere schaduw */
 }
 
 /* Inputveld voor zoekopdrachten */
 #search-input {
-  padding: 10px;
+  padding: 12px; /* Iets meer padding */
   font-size: 16px;
-  flex-grow: 1; /* Laat de input meegroeien in de beschikbare ruimte */
-  min-width: 200px; /* Minimale breedte voor de input */
-  border-radius: 5px;
-  border: 1px solid #ccc;
+  flex-grow: 1;
+  min-width: 200px;
+  border-radius: 8px; /* Meer afgeronde hoeken */
+  border: 1px solid #dcdcdc; /* Lichtere randkleur */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#search-input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); /* Focus-effect */
+    outline: none;
 }
 
 /* Styling voor knoppen en selectboxen */
 .search-container button,
 .search-container select {
-  padding: 10px 15px;
+  padding: 12px 18px; /* Meer padding */
   font-size: 16px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  background-color: #e0e0e0;
+  border-radius: 8px; /* Meer afgeronde hoeken */
+  border: 1px solid #cccccc;
+  background-color: #007bff; /* Blauwe knop voor 'Zoek' */
+  color: white;
   cursor: pointer;
-  transition: background-color 0.3s ease; /* Vloeiende overgang bij hover */
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.search-container button:hover,
+.search-container select {
+    background-color: #e9ecef; /* Lichtere achtergrond voor select */
+    color: #333;
+    border-color: #ced4da;
+}
+
+.search-container button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px); /* Lichte lift bij hover */
+}
+
 .search-container select:hover {
-  background-color: #d0d0d0;
+  background-color: #dee2e6;
+  border-color: #a0a0a0;
 }
 
 /* Algemene container voor films (zowel zoekresultaten als favorieten) */
 .movie-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsieve kolommen */
-  gap: 20px; /* Ruimte tussen de filmkaarten */
-  width: 100%; /* Volle breedte */
-  max-width: 1000px; /* Maximale breedte voor leesbaarheid */
-  margin-top: 20px;
-  padding: 0 10px; /* Wat horizontale padding */
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 25px; /* Iets meer ruimte tussen de kaarten */
+  width: 100%;
+  max-width: 1000px;
+  margin-top: 25px;
+  padding: 0 10px;
 }
 
 /* Individuele filmkaart styling */
 .movie {
   background-color: white;
-  border-radius: 10px;
-  overflow: hidden; /* Zorgt ervoor dat de inhoud binnen de afgeronde hoeken blijft */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtiele schaduw */
+  border-radius: 12px; /* Meer afgeronde hoeken */
+  overflow: hidden;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Duidelijkere schaduw */
   display: flex;
   flex-direction: column;
-  height: 100%; /* Zorgt ervoor dat alle kaarten dezelfde hoogte hebben */
-  cursor: pointer; /* Geeft aan dat de kaart klikbaar is */
-  transition: transform 0.2s ease-in-out; /* Animatie bij hover */
+  height: 100%;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
 .movie:hover {
-  transform: translateY(-5px); /* Lift de kaart iets omhoog bij hover */
+  transform: translateY(-8px); /* Meer lift bij hover */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* Duidelijkere schaduw bij hover */
 }
 
 /* Afbeelding in de filmkaart */
 .movie img {
   width: 100%;
-  height: 300px; /* Vaste hoogte voor afbeeldingen */
-  object-fit: cover; /* Zorgt ervoor dat de afbeelding de beschikbare ruimte vult zonder vervorming */
-  border-bottom: 2px solid #eee;
+  height: 300px;
+  object-fit: cover;
+  border-bottom: 1px solid #f0f0f0; /* Subtielere rand */
 }
 
 /* Titel van de film */
 .movie h3 {
-  padding: 10px;
-  font-size: 18px;
-  font-weight: bold;
-  flex-grow: 1; /* Laat de titel groeien om de resterende ruimte te vullen */
+  padding: 15px; /* Meer padding */
+  font-size: 19px;
+  font-weight: 600; /* Iets dikker lettertype */
+  flex-grow: 1;
+  color: #222;
 }
 
 /* Paragrafen (release date, rating) in de filmkaart */
 .movie p {
-  padding: 0 10px;
+  padding: 0 15px;
   font-size: 14px;
-  color: #666;
+  color: #555;
+  margin-bottom: 5px;
 }
 
-/* Styling voor de favorietenknop */
+/* Styling voor de favorietenknop binnen filmkaart */
 .movie button {
-  margin: 10px;
-  padding: 8px 12px;
-  font-size: 14px;
+  margin: 15px; /* Meer marge */
+  padding: 10px 15px;
+  font-size: 15px;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
-  background-color: #007bff; /* Blauw voor 'voeg toe' */
+  background-color: #28a745; /* Groen voor 'voeg toe' */
   color: white;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .movie button:hover {
-  background-color: #0056b3;
+  background-color: #218838;
+  transform: translateY(-1px);
 }
 
 /* Specifieke styling voor de verwijderknop in favorieten */
@@ -134,11 +162,13 @@ body {
 
 /* Heading voor "Mijn Favorieten" */
 h2 {
-    width: 100%; /* Zorgt ervoor dat de heading de volle breedte inneemt */
-    text-align: center; /* Centreert de tekst */
-    margin-top: 40px; /* Ruimte boven de heading */
-    margin-bottom: 20px; /* Ruimte onder de heading */
-    color: #333;
+    width: 100%;
+    text-align: center;
+    margin-top: 50px; /* Meer ruimte boven favorieten */
+    margin-bottom: 25px;
+    color: #222;
+    font-size: 2em;
+    font-weight: 700;
 }
 
 /* Styling voor het feedbackgebied */
@@ -147,61 +177,79 @@ h2 {
     max-width: 800px;
     text-align: center;
     margin-bottom: 20px;
+    padding: 10px;
     font-size: 1.1em;
     font-weight: bold;
-    color: #333;
+    border-radius: 5px;
 }
 
 /* Styling voor success- en errorberichten */
 .message-area.success {
-    color: #28a745; /* Groen voor succes */
+    background-color: #d4edda; /* Lichtgroen */
+    color: #155724; /* Donkergroene tekst */
+    border: 1px solid #c3e6cb;
 }
 
 .message-area.error {
-    color: #dc3545; /* Rood voor fouten */
+    background-color: #f8d7da; /* Lichtrood */
+    color: #721c24; /* Donkerrode tekst */
+    border: 1px solid #f5c6cb;
+}
+
+.message-area.info {
+    background-color: #e2e3e5; /* Lichtgrijs */
+    color: #383d41; /* Donkergrijze tekst */
+    border: 1px solid #d6d8db;
 }
 
 /* Styling voor de laadindicator */
 .loading-indicator {
-    display: none; /* Standaard verborgen */
+    display: none;
     width: 100%;
     max-width: 800px;
     text-align: center;
-    padding: 10px;
-    background-color: #ffc107; /* Gele achtergrond */
-    color: #333;
+    padding: 12px;
+    background-color: #ffe08a; /* Zachter geel */
+    color: #775600; /* Donkerder tekstkleur */
     font-weight: bold;
-    border-radius: 5px;
+    border-radius: 8px;
     margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .loading-indicator.show {
-    display: block; /* Toon wanneer geladen wordt */
+    display: block;
 }
 
 /* Styling voor de film detailpagina */
 .movie-detail-container {
     background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin-top: 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12); /* Duidelijkere schaduw */
+    padding: 30px; /* Meer padding */
+    margin-top: 30px;
     width: 100%;
-    max-width: 800px;
+    max-width: 900px; /* Bredere detailpagina */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .movie-detail-container button#back-to-search {
-    background-color: #6c757d; /* Grijs voor terugknop */
+    background-color: #6c757d;
     color: white;
-    padding: 10px 15px;
-    border-radius: 5px;
+    padding: 12px 20px;
+    border-radius: 8px;
     border: none;
     cursor: pointer;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .movie-detail-container button#back-to-search:hover {
     background-color: #5a6268;
+    transform: translateY(-2px);
 }
 
 .detail-content {
@@ -212,57 +260,109 @@ h2 {
 }
 
 .detail-content img {
-    max-width: 300px;
+    max-width: 350px; /* Grotere afbeelding op detailpagina */
     height: auto;
-    border-radius: 8px;
-    margin-bottom: 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .detail-content h2 {
     margin-top: 0;
-    margin-bottom: 10px;
-    font-size: 2em;
-    color: #333;
+    margin-bottom: 15px;
+    font-size: 2.5em; /* Grotere titel */
+    color: #222;
+    font-weight: 700;
 }
 
 .detail-content p {
     margin-bottom: 10px;
-    font-size: 1.1em;
-    color: #555;
-    line-height: 1.5;
+    font-size: 1.2em; /* Grotere tekst */
+    color: #444;
+    line-height: 1.6;
+    max-width: 700px; /* Beperk breedte voor leesbaarheid */
 }
 
 .detail-content p strong {
     color: #333;
 }
 
+/* Knop op detailpagina */
+.detail-content .add-favorite {
+    background-color: #28a745;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.detail-content .add-favorite:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
+
 
 /* Media queries voor responsiviteit */
 @media (max-width: 768px) {
   .search-container {
-    flex-direction: column; /* Stapel elementen verticaal op kleinere schermen */
-    align-items: center; /* Centreer elementen */
+    flex-direction: column;
+    align-items: stretch; /* Stretch items om de volledige breedte te benutten */
+    padding: 15px;
   }
 
   #search-input {
-    width: 90%; /* Meer breedte op kleinere schermen */
-    max-width: 350px;
+    width: 100%; /* Volledige breedte op kleinere schermen */
+    margin-bottom: 10px;
+  }
+
+  .search-container button,
+  .search-container select {
+    width: 100%; /* Volledige breedte */
+    margin-bottom: 10px;
+  }
+  .search-container button:last-child,
+  .search-container select:last-child {
+      margin-bottom: 0; /* Geen marge onder het laatste element */
   }
 
   .movie-container {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* Kleinere kolommen op kleinere schermen */
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Kleinere kolommen */
+    gap: 15px;
   }
 
   .movie img {
-    height: 250px; /* Pas hoogte van afbeeldingen aan */
+    height: 220px; /* Pas hoogte van afbeeldingen aan */
+  }
+
+  .movie h3 {
+    font-size: 17px;
+    padding: 10px;
+  }
+
+  .movie p {
+    font-size: 13px;
+    padding: 0 10px;
+  }
+
+  .movie button {
+    padding: 8px 12px;
+    font-size: 13px;
+    margin: 10px;
+  }
+
+  .movie-detail-container {
+    padding: 20px;
+    max-width: 100%;
   }
 
   .detail-content img {
-      max-width: 200px; /* Kleinere afbeelding op detailscherm voor mobiel */
+      max-width: 250px; /* Kleinere afbeelding op detailscherm */
   }
 
   .detail-content h2 {
-      font-size: 1.5em;
+      font-size: 2em;
   }
 
   .detail-content p {
@@ -271,29 +371,58 @@ h2 {
 }
 
 @media (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+
+  .search-container {
+    padding: 10px;
+  }
+
   .movie-container {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 10px;
   }
 
   .movie img {
-    height: 200px;
+    height: 180px;
   }
 
   .movie h3 {
-    font-size: 16px;
+    font-size: 15px;
+    padding: 8px;
   }
 
   .movie p {
-    padding: 0 5px 5px; /* Minder padding op kleine schermen */
-    font-size: 12px;
+    font-size: 11px;
+    padding: 0 8px;
   }
 
   .movie button {
     padding: 6px 10px;
-    font-size: 12px;
+    font-size: 11px;
+    margin: 8px;
+  }
+
+  .movie-detail-container {
+    padding: 15px;
   }
 
   .detail-content img {
-      max-width: 150px;
+      max-width: 180px;
+  }
+
+  .detail-content h2 {
+      font-size: 1.8em;
+  }
+
+  .detail-content p {
+      font-size: 0.9em;
+  }
+
+  .movie-detail-container button#back-to-search,
+  .detail-content .add-favorite {
+      padding: 10px 15px;
+      font-size: 1em;
   }
 }
