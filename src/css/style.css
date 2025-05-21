@@ -155,6 +155,24 @@ h2 {
     color: #dc3545; /* Rood voor fouten */
 }
 
+/* Styling voor de laadindicator */
+.loading-indicator {
+    display: none; /* Standaard verborgen */
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+    padding: 10px;
+    background-color: #ffc107; /* Gele achtergrond */
+    color: #333;
+    font-weight: bold;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.loading-indicator.show {
+    display: block; /* Toon wanneer geladen wordt */
+}
+
 /* Media queries voor responsiviteit */
 @media (max-width: 768px) {
   .search-container {
