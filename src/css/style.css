@@ -75,6 +75,12 @@ body {
   display: flex;
   flex-direction: column;
   height: 100%; /* Zorgt ervoor dat alle kaarten dezelfde hoogte hebben */
+  cursor: pointer; /* Geeft aan dat de kaart klikbaar is */
+  transition: transform 0.2s ease-in-out; /* Animatie bij hover */
+}
+
+.movie:hover {
+  transform: translateY(-5px); /* Lift de kaart iets omhoog bij hover */
 }
 
 /* Afbeelding in de filmkaart */
@@ -173,6 +179,64 @@ h2 {
     display: block; /* Toon wanneer geladen wordt */
 }
 
+/* Styling voor de film detailpagina */
+.movie-detail-container {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-top: 20px;
+    width: 100%;
+    max-width: 800px;
+}
+
+.movie-detail-container button#back-to-search {
+    background-color: #6c757d; /* Grijs voor terugknop */
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.movie-detail-container button#back-to-search:hover {
+    background-color: #5a6268;
+}
+
+.detail-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.detail-content img {
+    max-width: 300px;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.detail-content h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 2em;
+    color: #333;
+}
+
+.detail-content p {
+    margin-bottom: 10px;
+    font-size: 1.1em;
+    color: #555;
+    line-height: 1.5;
+}
+
+.detail-content p strong {
+    color: #333;
+}
+
+
 /* Media queries voor responsiviteit */
 @media (max-width: 768px) {
   .search-container {
@@ -192,6 +256,18 @@ h2 {
   .movie img {
     height: 250px; /* Pas hoogte van afbeeldingen aan */
   }
+
+  .detail-content img {
+      max-width: 200px; /* Kleinere afbeelding op detailscherm voor mobiel */
+  }
+
+  .detail-content h2 {
+      font-size: 1.5em;
+  }
+
+  .detail-content p {
+      font-size: 1em;
+  }
 }
 
 @media (max-width: 480px) {
@@ -208,11 +284,16 @@ h2 {
   }
 
   .movie p {
+    padding: 0 5px 5px; /* Minder padding op kleine schermen */
     font-size: 12px;
   }
 
   .movie button {
     padding: 6px 10px;
     font-size: 12px;
+  }
+
+  .detail-content img {
+      max-width: 150px;
   }
 }
