@@ -185,7 +185,7 @@ body {
     background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0));
     width: 80%;
     max-width: 800px;
-    margin: 60px auto; /* Meer marge rondom de lijn */
+    margin: 60px auto;
 }
 
 
@@ -372,6 +372,50 @@ h2 {
     color: #555;
 }
 
+/* Nieuwe styling voor favorieten zoek- en sorteercontainer */
+.favorites-filter-sort-container {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    max-width: 1000px;
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    margin-bottom: 20px; /* Ruimte onder deze container */
+}
+
+.favorites-filter-sort-container input,
+.favorites-filter-sort-container select {
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #dcdcdc;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    flex-grow: 1;
+    min-width: 200px;
+}
+
+.favorites-filter-sort-container input:focus,
+.favorites-filter-sort-container select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+    outline: none;
+}
+
+.favorites-filter-sort-container select {
+    background-color: #e9ecef;
+    color: #333;
+    border-color: #ced4da;
+}
+
+.favorites-filter-sort-container select:hover {
+    background-color: #dee2e6;
+    border-color: #a0a0a0;
+}
+
 
 /* Media queries voor responsiviteit */
 @media (max-width: 768px) {
@@ -382,24 +426,28 @@ h2 {
     font-size: 1em;
   }
 
-  .search-container {
+  .search-container,
+  .favorites-filter-sort-container {
     flex-direction: column;
     align-items: stretch;
     padding: 15px;
   }
 
-  #search-input {
+  #search-input,
+  #favorites-search-input {
     width: 100%;
     margin-bottom: 10px;
   }
 
   .search-container button,
-  .search-container select {
+  .search-container select,
+  .favorites-filter-sort-container select {
     width: 100%;
     margin-bottom: 10px;
   }
   .search-container button:last-child,
-  .search-container select:last-child {
+  .search-container select:last-child,
+  .favorites-filter-sort-container select:last-child {
       margin-bottom: 0;
   }
 
@@ -458,7 +506,8 @@ h2 {
     font-size: 0.9em;
   }
 
-  .search-container {
+  .search-container,
+  .favorites-filter-sort-container {
     padding: 10px;
   }
 

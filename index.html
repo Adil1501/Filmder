@@ -53,6 +53,17 @@
     <hr class="section-divider">
 
     <h2>Mijn Favorieten</h2>
+    <div class="favorites-filter-sort-container">
+      <input type="text" id="favorites-search-input" placeholder="Zoek in favorieten..." />
+      <select id="favorites-sort-select">
+        <option value="">Sorteer favorieten op...</option>
+        <option value="release_desc">Nieuwste eerst</option>
+        <option value="release_asc">Oudste eerst</option>
+        <option value="rating_desc">Hoogste beoordeling</option>
+        <option value="rating_asc">Laagste beoordeling</option>
+      </select>
+    </div>
+
     <div id="favorites-container" class="movie-container"></div>
 
     <script type="module" src="/src/js/main.js"></script>
