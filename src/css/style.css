@@ -246,6 +246,17 @@ h2 {
     border: 1px solid #d6d8db;
 }
 
+/* Nieuwe stijl voor algemene informatiemeldingen binnen containers */
+.info-message { /* TOEVOEGEN */
+    text-align: center;
+    padding: 20px;
+    color: #555;
+    font-size: 1.1em;
+    width: 100%;
+    grid-column: 1 / -1; /* Zorgt dat de melding de volledige breedte inneemt in een grid */
+}
+
+
 /* Styling voor de laadindicator */
 .loading-indicator {
     display: none;

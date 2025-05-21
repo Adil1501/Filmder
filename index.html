@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Filmder - Ontdek je volgende favoriete film</title>
     <link rel="stylesheet" href="/src/css/style.css" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" href="/icons/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <meta name="theme-color" content="#007bff" />
   </head>
   <body>
     <header class="app-header">
@@ -78,5 +82,19 @@
     <section id="favorites-container" class="movie-container" aria-label="Mijn favoriete films"></section>
 
     <script type="module" src="/src/js/main.js"></script>
+    <script>
+      // Registreer Service Worker
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/service-worker.js')
+            .then(registration => {
+              console.log('Service Worker geregistreerd:', registration.scope);
+            })
+            .catch(error => {
+              console.error('Service Worker registratie mislukt:', error);
+            });
+        });
+      }
+    </script>
   </body>
 </html>

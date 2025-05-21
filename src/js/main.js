@@ -60,8 +60,9 @@ function showLoadingIndicator(show) {
  * Toont een tijdelijke melding aan de gebruiker.
  * @param {string} message - Het bericht dat getoond moet worden.
  * @param {string} type - Het type melding ('success', 'error', 'info').
+ * @param {number} duration - Hoe lang de melding zichtbaar blijft in ms (standaard 3000ms).
  */
-function showMessage(message, type = 'info') {
+function showMessage(message, type = 'info', duration = 3000) {
   messageArea.textContent = message;
   messageArea.className = `message-area ${type}`;
   messageArea.setAttribute('aria-live', 'polite');
@@ -69,7 +70,7 @@ function showMessage(message, type = 'info') {
     messageArea.textContent = '';
     messageArea.className = 'message-area';
     messageArea.removeAttribute('aria-live');
-  }, 3000);
+  }, duration);
 }
 
 /**
@@ -80,13 +81,15 @@ async function fetchGenres() {
   try {
     const response = await fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}&language=nl-NL`);
     if (!response.ok) {
-        throw new Error(`HTTP fout! Status: ${response.status}`);
+        // Verbeterde foutafhandeling
+        const errorText = await response.text();
+        throw new Error(`Fout bij ophalen genres: ${response.status} ${response.statusText}. Details: ${errorText}`);
     }
     const data = await response.json();
     return data.genres;
   } catch (error) {
     console.error('Fout bij ophalen genres:', error);
-    showMessage('Fout bij het laden van genres. Probeer opnieuw.', 'error');
+    showMessage(`Fout bij het laden van genres. Probeer opnieuw. (${error.message})`, 'error', 5000);
     return [];
   }
 }
@@ -108,6 +111,15 @@ async function fetchMovies(query = '', genreId = '', page = 1) {
   currentGenreId = genreId;
   currentPage = page;
 
+  // Voorkom onnodige API calls voor lege zoektermen, tenzij het de initiële laadbeurt is
+  if (query.length < 2 && query.length > 0) { // Toegestaan is 0 voor populair, maar niet 1
+    showMessage('Voer minimaal 2 karakters in om te zoeken.', 'info');
+    movieContainer.innerHTML = '<p class="info-message">Voer een zoekterm in of selecteer een genre om films te vinden.</p>';
+    showLoadingIndicator(false);
+    return;
+  }
+
+
   try {
     let url;
     if (query) {
@@ -118,7 +130,8 @@ async function fetchMovies(query = '', genreId = '', page = 1) {
 
     const response = await fetch(url);
     if (!response.ok) {
-        throw new Error(`HTTP fout! Status: ${response.status}`);
+        const errorText = await response.text();
+        throw new Error(`HTTP Fout! Status: ${response.status}. Details: ${errorText}`);
     }
     const data = await response.json();
     let results = data.results;
@@ -138,21 +151,18 @@ async function fetchMovies(query = '', genreId = '', page = 1) {
     displayMovies(results, movieContainer, true);
     updatePaginationControls();
 
-    if (results.length === 0 && !query && !genreId) {
-        showMessage('Geen films gevonden. Probeer een andere zoekterm.', 'info');
+    if (results.length === 0) {
+        showMessage('Geen films gevonden met deze criteria. Probeer een andere zoekterm.', 'info');
         paginationControls.style.display = 'none';
-    } else if (results.length === 0 && (query || genreId)) {
-        showMessage('Geen films gevonden met deze criteria.', 'info');
-        paginationControls.style.display = 'none';
-    }
-    else {
+        movieContainer.innerHTML = '<p class="info-message">Geen films gevonden die overeenkomen met je selectie.</p>';
+    } else {
         paginationControls.style.display = 'flex';
     }
 
   } catch (err) {
     console.error('Fout bij ophalen films:', err);
-    showMessage('Er is een fout opgetreden bij het laden van films. Probeer het later opnieuw.', 'error');
-    movieContainer.innerHTML = '<p>Kon geen films laden. Probeer het later opnieuw.</p>';
+    showMessage(`Er is een fout opgetreden bij het laden van films: ${err.message}. Probeer het later opnieuw.`, 'error', 5000);
+    movieContainer.innerHTML = '<p class="info-message">Kon geen films laden. Controleer je internetverbinding of probeer het later opnieuw.</p>';
     paginationControls.style.display = 'none';
   } finally {
     showLoadingIndicator(false);
@@ -170,13 +180,14 @@ async function fetchMovieDetail(movieId) {
         const url = `${API_DETAIL_URL}${movieId}?api_key=${API_KEY}&language=nl-NL`;
         const response = await fetch(url);
         if (!response.ok) {
-            throw new Error(`HTTP fout! Status: ${response.status}`);
+            const errorText = await response.text();
+            throw new Error(`HTTP Fout! Status: ${response.status}. Details: ${errorText}`);
         }
         const data = await response.json();
         return data;
     } catch (error) {
         console.error(`Fout bij ophalen filmdetails voor ID ${movieId}:`, error);
-        showMessage('Kon filmdetails niet laden. Probeer later opnieuw.', 'error');
+        showMessage(`Kon filmdetails niet laden: ${error.message}. Probeer later opnieuw.`, 'error', 5000);
         return null;
     } finally {
         showLoadingIndicator(false);
@@ -193,7 +204,8 @@ function displayMovies(movies, container, showAddButton) {
   container.innerHTML = '';
 
   if (movies.length === 0 && showAddButton) {
-    container.innerHTML = '<p>Geen films gevonden...</p>';
+    // Deze boodschap wordt nu al afgehandeld in fetchMovies
+    // container.innerHTML = '<p class="info-message">Geen films gevonden...</p>';
     return;
   }
 
@@ -203,17 +215,17 @@ function displayMovies(movies, container, showAddButton) {
     movieElement.dataset.movieId = movie.id;
     movieElement.setAttribute('tabindex', '0');
     movieElement.setAttribute('role', 'article');
+    movieElement.setAttribute('aria-labelledby', `movie-title-${movie.id}`); // Voor toegankelijkheid
 
-    // Gebruik de 'loading="lazy"' attribuut voor lazy loading
     const imageUrl = movie.poster_path ? `${IMAGE_BASE_URL}w500${movie.poster_path}` : 'https://via.placeholder.com/500x750?text=Geen+Afbeelding';
     const placeholderUrl = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'; // Tiny transparent GIF
 
     const releaseDate = movie.release_date || 'Onbekend';
-    const voteAverage = movie.vote_average ? movie.vote_average.toFixed(1) : 'Onbekend';
+    const voteAverage = movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A';
 
     movieElement.innerHTML = `
       <img src="${placeholderUrl}" data-src="${imageUrl}" alt="Poster voor ${movie.title}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/500x750?text=Afbeelding+niet+gevonden';" />
-      <h3>${movie.title}</h3>
+      <h3 id="movie-title-${movie.id}">${movie.title}</h3>
       <p>Release: ${releaseDate}</p>
       <p>Beoordeling: ${voteAverage}</p>
       ${showAddButton ? `<button class="add-favorite" aria-label="Voeg ${movie.title} toe aan favorieten">➕ Favoriet</button>` : `<button class="remove-favorite" aria-label="Verwijder ${movie.title} uit favorieten">🗑 Verwijder</button>`}
@@ -231,9 +243,10 @@ function displayMovies(movies, container, showAddButton) {
       });
     }
 
+    // Verbeterde focusbeheer voor toegankelijkheid
     movieElement.addEventListener('keydown', (event) => {
       if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
+        event.preventDefault(); // Voorkom standaard scrollgedrag bij spatiebalk
         showMovieDetail(movie.id);
       }
     });
@@ -241,7 +254,6 @@ function displayMovies(movies, container, showAddButton) {
     container.appendChild(movieElement);
   });
 
-  // Observeer de afbeeldingen voor lazy loading
   observeImages();
 }
 
@@ -250,20 +262,27 @@ function displayMovies(movies, container, showAddButton) {
  */
 function observeImages() {
     const lazyImages = document.querySelectorAll('img[data-src]');
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.removeAttribute('data-src');
-                observer.unobserve(img);
-            }
-        });
-    });
+    if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    img.removeAttribute('data-src');
+                    observer.unobserve(img);
+                }
+            });
+        }, { rootMargin: '0px 0px 200px 0px' });
 
-    lazyImages.forEach(img => {
-        imageObserver.observe(img);
-    });
+        lazyImages.forEach(img => {
+            imageObserver.observe(img);
+        });
+    } else {
+        lazyImages.forEach(img => {
+            img.src = img.dataset.src;
+            img.removeAttribute('data-src');
+        });
+    }
 }
 
 
@@ -272,6 +291,7 @@ function observeImages() {
  */
 async function populateGenreDropdown() {
   const genres = await fetchGenres();
+  genreSelect.innerHTML = '<option value="">Alle genres</option>';
   genres.forEach(genre => {
     const option = document.createElement('option');
     option.value = genre.id;
@@ -281,14 +301,13 @@ async function populateGenreDropdown() {
 }
 
 // Event listeners voor hoofdzoek-, genre- en sorteerfunctionaliteit
-// Gebruik een debounce-functie voor searchInput om API calls te beperken
 let searchTimeout;
 searchInput.addEventListener('input', () => {
   clearTimeout(searchTimeout);
   searchTimeout = setTimeout(() => {
     currentPage = 1;
     fetchMovies(searchInput.value.trim(), genreSelect.value, currentPage);
-  }, 300); // Wacht 300ms na de laatste input
+  }, 300);
 });
 
 genreSelect.addEventListener('change', () => {
@@ -306,23 +325,29 @@ sortSelect.addEventListener('change', () => {
  * @param {Object} movie - Het filmobject om toe te voegen.
  */
 function addToFavorites(movie) {
-  const favorites = getFavorites();
-  const exists = favorites.some(fav => fav.id === movie.id);
-  if (!exists) {
-    favorites.push({
-      id: movie.id,
-      title: movie.title,
-      poster_path: movie.poster_path,
-      release_date: movie.release_date,
-      vote_average: movie.vote_average,
-      overview: movie.overview,
-      genre_ids: movie.genre_ids
-    });
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-    showMessage(`'${movie.title}' is toegevoegd aan je favorieten!`, 'success');
-    renderFavorites();
-  } else {
-    showMessage(`'${movie.title}' staat al in je favorieten.`, 'info');
+  try {
+    const favorites = getFavorites();
+    const exists = favorites.some(fav => fav.id === movie.id);
+    if (!exists) {
+      favorites.push({
+        id: movie.id,
+        title: movie.title,
+        poster_path: movie.poster_path,
+        release_date: movie.release_date,
+        vote_average: movie.vote_average,
+        overview: movie.overview,
+        // Zorg ervoor dat genre_ids altijd wordt meegegeven, zelfs als leeg
+        genre_ids: movie.genre_ids || []
+      });
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+      showMessage(`'${movie.title}' is toegevoegd aan je favorieten!`, 'success');
+      renderFavorites();
+    } else {
+      showMessage(`'${movie.title}' staat al in je favorieten.`, 'info');
+    }
+  } catch (e) {
+    console.error('Fout bij toevoegen favoriet:', e);
+    showMessage('Kon film niet toevoegen aan favorieten. Opslaglimiet bereikt?', 'error', 5000);
   }
 }
 
@@ -331,14 +356,19 @@ function addToFavorites(movie) {
  * @param {number} movieId - De ID van de film die verwijderd moet worden.
  */
 function removeFromFavorites(movieId) {
-  let favorites = getFavorites();
-  const movieToRemove = favorites.find(movie => movie.id === movieId);
-  favorites = favorites.filter(movie => movie.id !== movieId);
-  localStorage.setItem('favorites', JSON.stringify(favorites));
-  if (movieToRemove) {
-      showMessage(`'${movieToRemove.title}' is verwijderd uit je favorieten.`, 'success');
+  try {
+    let favorites = getFavorites();
+    const movieToRemove = favorites.find(movie => movie.id === movieId);
+    favorites = favorites.filter(movie => movie.id !== movieId);
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+    if (movieToRemove) {
+        showMessage(`'${movieToRemove.title}' is verwijderd uit je favorieten.`, 'success');
+    }
+    renderFavorites();
+  } catch (e) {
+    console.error('Fout bij verwijderen favoriet:', e);
+    showMessage('Kon film niet verwijderen uit favorieten.', 'error');
   }
-  renderFavorites();
 }
 
 /**
@@ -346,8 +376,14 @@ function removeFromFavorites(movieId) {
  * @returns {Array} Een array met favoriete filmobjecten.
  */
 function getFavorites() {
-  const favorites = localStorage.getItem('favorites');
-  return favorites ? JSON.parse(favorites) : [];
+  try {
+    const favorites = localStorage.getItem('favorites');
+    return favorites ? JSON.parse(favorites) : [];
+  } catch (e) {
+    console.error('Fout bij ophalen favorieten uit localStorage:', e);
+    showMessage('Kon favoriete films niet laden. Gegevens corrupt?', 'error', 5000);
+    return [];
+  }
 }
 
 /**
@@ -357,22 +393,17 @@ function getFavorites() {
 function renderFavorites() {
   let favorites = getFavorites();
 
-  // Filteren op zoekterm voor favorieten
-  // Gebruik debounce voor favorieten zoekveld
   let favoritesSearchTimeout;
-  favoritesSearchInput.removeEventListener('input', renderFavorites); // Voorkom dubbele listeners
-  favoritesSearchInput.addEventListener('input', () => {
+  favoritesSearchInput.oninput = () => {
     clearTimeout(favoritesSearchTimeout);
     favoritesSearchTimeout = setTimeout(() => {
-        renderFavoritesInternal(getFavorites()); // Roep interne functie aan om favorites array te updaten
+        renderFavoritesInternal(getFavorites());
     }, 300);
-  });
+  };
   
-  // Direct renderen voor sorteerwijzigingen
-  favoritesSortSelect.removeEventListener('change', renderFavorites); // Voorkom dubbele listeners
-  favoritesSortSelect.addEventListener('change', () => renderFavoritesInternal(getFavorites()));
+  favoritesSortSelect.onchange = () => renderFavoritesInternal(getFavorites());
 
-  renderFavoritesInternal(favorites); // Initieel renderen
+  renderFavoritesInternal(favorites);
 }
 
 /**
@@ -380,7 +411,7 @@ function renderFavorites() {
  * @param {Array} allFavorites - De volledige lijst met favorieten.
  */
 function renderFavoritesInternal(allFavorites) {
-    let filteredAndSortedFavorites = [...allFavorites]; // Werk met een kopie
+    let filteredAndSortedFavorites = [...allFavorites];
 
     const searchTerm = favoritesSearchInput.value.trim().toLowerCase();
     if (searchTerm) {
@@ -407,12 +438,12 @@ function renderFavoritesInternal(allFavorites) {
 
     if (filteredAndSortedFavorites.length === 0 && allFavorites.length > 0) {
         favoritesContainer.innerHTML = `
-            <p>Geen favorieten gevonden met deze zoekterm of sorteercriteria.</p>
+            <p class="info-message">Geen favorieten gevonden met deze zoekterm of sorteercriteria.</p>
         `;
     } else if (allFavorites.length === 0) {
         favoritesContainer.innerHTML = `
-            <p>Nog geen favoriete films hier.</p>
-            <p>Voeg films toe vanuit de zoekresultaten door op '➕ Favoriet' te klikken.</p>
+            <p class="info-message">Nog geen favoriete films hier.</p>
+            <p class="info-message">Voeg films toe vanuit de zoekresultaten door op '➕ Favoriet' te klikken.</p>
         `;
     }
 }
@@ -421,9 +452,14 @@ function renderFavoritesInternal(allFavorites) {
 // Event listener voor de 'Wis alle favorieten' knop
 clearFavoritesButton.addEventListener('click', () => {
     if (confirm('Weet je zeker dat je AL je favoriete films wilt wissen? Dit kan niet ongedaan gemaakt worden.')) {
-        localStorage.removeItem('favorites');
-        showMessage('Alle favorieten zijn gewist.', 'success');
-        renderFavorites(); // Update de weergave
+        try {
+            localStorage.removeItem('favorites');
+            showMessage('Alle favorieten zijn gewist.', 'success');
+            renderFavorites();
+        } catch (e) {
+            console.error('Fout bij wissen van alle favorieten:', e);
+            showMessage('Kon favorieten niet wissen. Probeer het later opnieuw.', 'error');
+        }
     }
 });
 
@@ -464,14 +500,13 @@ async function showMovieDetail(movieId) {
     if (movie) {
         const imageUrl = movie.poster_path ? `${IMAGE_BASE_URL}w500${movie.poster_path}` : 'https://via.placeholder.com/500x750?text=Geen+Afbeelding';
         const releaseDate = movie.release_date || 'Onbekend';
-        const voteAverage = movie.vote_average ? movie.vote_average.toFixed(1) : 'Onbekend';
+        const voteAverage = movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A';
         const overview = movie.overview || 'Geen samenvatting beschikbaar.';
         const genres = movie.genres && movie.genres.length > 0 ? movie.genres.map(g => g.name).join(', ') : 'Onbekend';
 
         detailContent.innerHTML = `
             <img src="${imageUrl}" alt="Poster voor ${movie.title}" onerror="this.onerror=null; this.src='https://via.placeholder.com/500x750?text=Afbeelding+niet+gevonden';" />
-            <h2>${movie.title}</h2>
-            <p><strong>Release:</strong> ${releaseDate}</p>
+            <h2 id="detail-movie-title-${movie.id}">${movie.title}</h2> <p><strong>Release:</strong> ${releaseDate}</p>
             <p><strong>Beoordeling:</strong> ${voteAverage}</p>
             <p><strong>Genre(s):</strong> ${genres}</p>
             <p><strong>Samenvatting:</strong> ${overview}</p>
@@ -505,9 +540,13 @@ async function showMovieDetail(movieId) {
         });
 
         movieDetailContainer.style.display = 'flex';
-        movieDetailContainer.focus();
+        // Focus op de terugknop voor betere navigatie
+        backToSearchButton.focus();
     } else {
         movieDetailContainer.style.display = 'none';
+        // Als filmdetails niet geladen kunnen worden, toon dan zoekresultaten weer
+        showMovieContainer();
+        fetchMovies(currentSearchQuery, currentGenreId, currentPage);
     }
     showLoadingIndicator(false);
 }
@@ -541,7 +580,7 @@ backToSearchButton.addEventListener('click', () => {
     hideMovieDetail();
     showMovieContainer();
     fetchMovies(currentSearchQuery, currentGenreId, currentPage);
-    searchInput.focus();
+    searchInput.focus(); // Focus terug op zoekveld
 });
 
 // Paginering event listeners
@@ -573,10 +612,9 @@ function updatePaginationControls() {
     nextPageButton.setAttribute('aria-disabled', currentPage === totalPages);
 }
 
-
 // Initialiseer de pagina bij het laden
 window.onload = () => {
   populateGenreDropdown();
   fetchMovies();
-  renderFavorites(); // Nu wordt de lazy loading geactiveerd voor favorieten
+  renderFavorites();
 };
