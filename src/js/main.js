@@ -132,11 +132,9 @@ async function fetchMovies(query = '', genreId = '', page = 1) {
     updatePaginationControls();
 
     if (results.length === 0 && !query && !genreId) {
-        // Geen films gevonden bij initieel laden of lege zoekopdracht
         showMessage('Geen films gevonden. Probeer een andere zoekterm.', 'info');
         paginationControls.style.display = 'none';
     } else if (results.length === 0 && (query || genreId)) {
-        // Geen films gevonden voor specifieke zoekopdracht
         showMessage('Geen films gevonden met deze criteria.', 'info');
         paginationControls.style.display = 'none';
     }
@@ -241,12 +239,12 @@ async function populateGenreDropdown() {
 
 // Event listeners voor hoofdzoek-, genre- en sorteerfunctionaliteit
 searchInput.addEventListener('input', () => {
-  currentPage = 1; // Reset paginering bij nieuwe zoekopdracht
+  currentPage = 1;
   fetchMovies(searchInput.value.trim(), genreSelect.value, currentPage);
 });
 
 genreSelect.addEventListener('change', () => {
-  currentPage = 1; // Reset paginering bij nieuwe genreselectie
+  currentPage = 1;
   fetchMovies(searchInput.value.trim(), genreSelect.value, currentPage);
 });
 
@@ -274,7 +272,7 @@ function addToFavorites(movie) {
     });
     localStorage.setItem('favorites', JSON.stringify(favorites));
     showMessage(`'${movie.title}' is toegevoegd aan je favorieten!`, 'success');
-    renderFavorites(); // Werk de favorietenlijst bij
+    renderFavorites();
   } else {
     showMessage(`'${movie.title}' staat al in je favorieten.`, 'info');
   }
@@ -292,7 +290,7 @@ function removeFromFavorites(movieId) {
   if (movieToRemove) {
       showMessage(`'${movieToRemove.title}' is verwijderd uit je favorieten.`, 'success');
   }
-  renderFavorites(); // Werk de favorietenlijst bij
+  renderFavorites();
 }
 
 /**
@@ -314,8 +312,8 @@ function renderFavorites() {
   const searchTerm = favoritesSearchInput.value.trim().toLowerCase();
   if (searchTerm) {
       favorites = favorites.filter(movie =>
-          movie.title.toLowerCase().includes(searchTerm) ||
-          movie.overview.toLowerCase().includes(searchTerm)
+          (movie.title && movie.title.toLowerCase().includes(searchTerm)) ||
+          (movie.overview && movie.overview.toLowerCase().includes(searchTerm))
       );
   }
 
@@ -325,13 +323,13 @@ function renderFavorites() {
       favorites = sortMovies(favorites, sortCriteria);
   }
 
-  displayMovies(favorites, favoritesContainer, false); // false = geen 'voeg toe' knop
+  displayMovies(favorites, favoritesContainer, false);
 
-  if (favorites.length === 0 && getFavorites().length > 0) { // Als er wel favorieten zijn, maar geen overeenkomsten met de zoekterm/filter
+  if (favorites.length === 0 && getFavorites().length > 0) {
       favoritesContainer.innerHTML = `
         <p>Geen favorieten gevonden met deze zoekterm of sorteercriteria.</p>
       `;
-  } else if (getFavorites().length === 0) { // Als er helemaal geen favorieten zijn
+  } else if (getFavorites().length === 0) {
       favoritesContainer.innerHTML = `
         <p>Nog geen favoriete films hier.</p>
         <p>Voeg films toe vanuit de zoekresultaten door op '➕ Favoriet' te klikken.</p>
@@ -351,7 +349,6 @@ favoritesSortSelect.addEventListener('change', renderFavorites);
  * @returns {Array} De gesorteerde array van films.
  */
 function sortMovies(movies, criteria) {
-  // Creeër een kopie van de array om de originele niet te muteren
   const sortedMovies = [...movies];
   switch (criteria) {
     case 'release_desc':
@@ -450,7 +447,6 @@ function hideMovieDetail() {
 backToSearchButton.addEventListener('click', () => {
     hideMovieDetail();
     showMovieContainer();
-    // Laad de laatst gezochte/populaire films opnieuw op de huidige pagina
     fetchMovies(currentSearchQuery, currentGenreId, currentPage);
 });
 
@@ -459,7 +455,7 @@ prevPageButton.addEventListener('click', () => {
     if (currentPage > 1) {
         currentPage--;
         fetchMovies(currentSearchQuery, currentGenreId, currentPage);
-        window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll naar boven
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 });
 
@@ -467,7 +463,7 @@ nextPageButton.addEventListener('click', () => {
     if (currentPage < totalPages) {
         currentPage++;
         fetchMovies(currentSearchQuery, currentGenreId, currentPage);
-        window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll naar boven
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 });
 
@@ -484,6 +480,6 @@ function updatePaginationControls() {
 // Initialiseer de pagina bij het laden
 window.onload = () => {
   populateGenreDropdown();
-  fetchMovies(); // Start met populaire films op pagina 1
-  renderFavorites(); // Toon de favorieten bij het laden
+  fetchMovies();
+  renderFavorites();
 };
