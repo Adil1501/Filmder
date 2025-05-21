@@ -30,6 +30,7 @@ const pageInfoSpan = document.getElementById('page-info');
 // Favorieten zoek- en sorteer elementen
 const favoritesSearchInput = document.getElementById('favorites-search-input');
 const favoritesSortSelect = document.getElementById('favorites-sort-select');
+const clearFavoritesButton = document.getElementById('clear-favorites-button');
 
 
 // Globale variabelen voor paginering en zoekstatus
@@ -185,7 +186,7 @@ async function fetchMovieDetail(movieId) {
 function displayMovies(movies, container, showAddButton) {
   container.innerHTML = '';
 
-  if (movies.length === 0 && showAddButton) { // Alleen voor de hoofd movie container
+  if (movies.length === 0 && showAddButton) {
     container.innerHTML = '<p>Geen films gevonden...</p>';
     return;
   }
@@ -210,7 +211,7 @@ function displayMovies(movies, container, showAddButton) {
     const favoriteButton = movieElement.querySelector('.add-favorite') || movieElement.querySelector('.remove-favorite');
     if (favoriteButton) {
       favoriteButton.addEventListener('click', (event) => {
-        event.stopPropagation();
+        event.stopPropagation(); // Voorkomt dat de klik doorklikt naar de filmdetails
         if (showAddButton) {
           addToFavorites(movie);
         } else {
@@ -304,6 +305,7 @@ function getFavorites() {
 
 /**
  * Rendert de favoriete films in de favorietencontainer, inclusief zoek- en sorteerfunctionaliteit.
+ * Controleert ook of de 'Wis alle favorieten' knop moet worden getoond/verborgen.
  */
 function renderFavorites() {
   let favorites = getFavorites();
@@ -325,6 +327,13 @@ function renderFavorites() {
 
   displayMovies(favorites, favoritesContainer, false);
 
+  // Toon of verberg de 'Wis alle favorieten' knop
+  if (getFavorites().length > 0) {
+      clearFavoritesButton.style.display = 'block';
+  } else {
+      clearFavoritesButton.style.display = 'none';
+  }
+
   if (favorites.length === 0 && getFavorites().length > 0) {
       favoritesContainer.innerHTML = `
         <p>Geen favorieten gevonden met deze zoekterm of sorteercriteria.</p>
@@ -340,6 +349,15 @@ function renderFavorites() {
 // Event listeners voor favorieten zoek- en sorteerfunctionaliteit
 favoritesSearchInput.addEventListener('input', renderFavorites);
 favoritesSortSelect.addEventListener('change', renderFavorites);
+
+// Event listener voor de 'Wis alle favorieten' knop
+clearFavoritesButton.addEventListener('click', () => {
+    if (confirm('Weet je zeker dat je AL je favoriete films wilt wissen? Dit kan niet ongedaan gemaakt worden.')) {
+        localStorage.removeItem('favorites');
+        showMessage('Alle favorieten zijn gewist.', 'success');
+        renderFavorites(); // Update de weergave
+    }
+});
 
 
 /**

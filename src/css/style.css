@@ -374,7 +374,7 @@ h2 {
     color: #555;
 }
 
-/* Nieuwe styling voor favorieten zoek- en sorteercontainer */
+/* Styling voor favorieten zoek- en sorteercontainer */
 .favorites-filter-sort-container {
     display: flex;
     gap: 12px;
@@ -386,7 +386,7 @@ h2 {
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-    margin-bottom: 20px; /* Ruimte onder deze container */
+    margin-bottom: 20px;
 }
 
 .favorites-filter-sort-container input,
@@ -397,7 +397,7 @@ h2 {
     border: 1px solid #dcdcdc;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
     flex-grow: 1;
-    min-width: 200px; /* Min-breedte voor input/select */
+    min-width: 200px;
 }
 
 .favorites-filter-sort-container input:focus,
@@ -418,6 +418,34 @@ h2 {
     border-color: #a0a0a0;
 }
 
+/* Styling voor de 'Wis alle favorieten' knop */
+.clear-favorites-button {
+    background-color: #dc3545; /* Rood voor 'wissen' */
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 20px; /* Ruimte boven de knop */
+    margin-bottom: 30px; /* Ruimte onder de knop */
+    width: fit-content; /* Pas de breedte aan de inhoud aan */
+    align-self: center; /* Centreer de knop als body een flexbox is */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.clear-favorites-button:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+}
+
+.clear-favorites-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    transform: none;
+    opacity: 0.7;
+}
 
 /* Media queries voor responsiviteit */
 @media (max-width: 768px) {
@@ -433,24 +461,24 @@ h2 {
     flex-direction: column;
     align-items: stretch;
     padding: 15px;
-    gap: 10px; /* Iets kleinere gap */
+    gap: 10px;
   }
 
   #search-input,
   #favorites-search-input {
     width: 100%;
-    margin-bottom: 0; /* Geen extra marge omdat gap dit regelt */
+    margin-bottom: 0;
   }
 
   .search-container button,
   .search-container select,
   .favorites-filter-sort-container select {
     width: 100%;
-    margin-bottom: 0; /* Geen extra marge */
+    margin-bottom: 0;
   }
 
   .movie-container {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Kleinere kolommen */
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 15px;
   }
 
@@ -499,6 +527,12 @@ h2 {
   .pagination-controls #page-info {
       font-size: 1em;
   }
+
+  .clear-favorites-button {
+      width: 100%; /* Maak de knop volledig breed op kleinere schermen */
+      margin-left: 0;
+      margin-right: 0;
+  }
 }
 
 @media (max-width: 480px) {
@@ -516,7 +550,7 @@ h2 {
   .search-container,
   .favorites-filter-sort-container {
     padding: 10px;
-    gap: 8px; /* Nog kleinere gap */
+    gap: 8px;
   }
 
   .movie-container {
