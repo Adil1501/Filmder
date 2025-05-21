@@ -1,631 +1,1149 @@
-/* Algemene reset voor alle elementen */
+/* === Reset === */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-/* Basisstyling voor de body */
+/* --- Vars & Custom Properties --- */
+:root {
+    /* Kleuren */
+    --primary: #1e90ff; /* Dodgerblue */
+    --primary-dark: #0066cc;
+    --primary-light: #8bbeff;
+    --accent: #ffa500; /* Oranje */
+    --accent-dark: #cc8400;
+    --accent-light: #ffcc80;
+    --background-light: #f9f9f9;
+    --background-dark: #1e1e1e;
+    --text-light: #2b2b2b;
+    --text-dark: #f0f0f0;
+    --card-light: #fff;
+    --card-dark: #2b2b2b;
+    --shadow: rgba(0, 0, 0, 0.1);
+    --error: #ff3333;
+    --success: #33cc33;
+    --info: #3498db;
+    --warning: #f39c12;
+    --border-light: #e0e0e0;
+    --border-dark: #444;
+
+    /* Spacing */
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+    --space-xxl: 3rem;
+
+    /* UI elementen */
+    --border-radius: 12px;
+    --border-radius-sm: 6px;
+    --transition: all 0.3s ease;
+    --focus-ring: 0 0 0 3px rgba(30, 144, 255, 0.4); /* Dodgerblue met alpha */
+
+    /* Typografie */
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --font-size-sm: 0.875rem;
+    --font-size-md: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.25rem;
+    --font-size-xxl: 1.5rem;
+}
+
+/* --- Body & Layout --- */
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f0f2f5; /* Zachtere achtergrondkleur */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  flex-direction: column;
-  padding: 20px;
-  color: #333;
+    font-family: var(--font-family);
+    background-color: var(--background-light);
+    color: var(--text-light);
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transition: var(--transition);
+    line-height: 1.6;
 }
 
-/* Screen Reader Only (SR-Only) voor toegankelijkheid */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
+/* --- Dark Theme --- */
+body[data-theme="dark"] {
+    background-color: var(--background-dark);
+    color: var(--text-dark);
 }
 
-/* App Header */
-.app-header {
-  text-align: center;
-  margin-bottom: 30px;
-  color: #007bff; /* Blauwe hoofdkleur */
-  width: 100%; /* Zorg dat de header de volledige breedte inneemt */
-  max-width: 1000px;
-}
-
-.app-header h1 {
-  font-size: 3.5em; /* Grote titel */
-  margin-bottom: 5px;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-}
-
-.app-header p {
-  font-size: 1.2em;
-  color: #555;
-}
-
-/* Styling voor de zoek- en filterbalk */
-.search-container {
-  margin-bottom: 25px;
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  justify-content: center;
-  width: 100%;
-  max-width: 1000px;
-  background-color: #ffffff;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-}
-
-/* Inputveld voor zoekopdrachten */
-#search-input {
-  padding: 12px;
-  font-size: 16px;
-  flex-grow: 1;
-  min-width: 200px;
-  border-radius: 8px;
-  border: 1px solid #dcdcdc;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-#search-input:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
-    outline: none;
-}
-
-/* Styling voor knoppen en selectboxen */
-.search-container button,
-.search-container select {
-  padding: 12px 18px;
-  font-size: 16px;
-  border-radius: 8px;
-  border: 1px solid #cccccc;
-  background-color: #007bff;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.search-container select {
-    background-color: #e9ecef;
-    color: #333;
-    border-color: #ced4da;
-}
-
-.search-container button:hover {
-  background-color: #0056b3;
-  transform: translateY(-2px);
-}
-
-.search-container select:hover {
-  background-color: #dee2e6;
-  border-color: #a0a0a0;
-}
-
-/* Algemene container voor films (zowel zoekresultaten als favorieten) */
-.movie-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 25px;
-  width: 100%;
-  max-width: 1000px;
-  margin-top: 25px;
-  padding: 0 10px; /* Consistente padding */
-}
-
-/* Individuele filmkaart styling */
-.movie {
-  background-color: white;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  cursor: pointer;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-}
-
-.movie:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-}
-
-/* Afbeelding in de filmkaart */
-.movie img {
-  width: 100%;
-  height: 300px;
-  object-fit: cover;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-/* Titel van de film */
-.movie h3 {
-  padding: 15px;
-  font-size: 19px;
-  font-weight: 600;
-  flex-grow: 1;
-  color: #222;
-}
-
-/* Paragrafen (release date, rating) in de filmkaart */
-.movie p {
-  padding: 0 15px;
-  font-size: 14px;
-  color: #555;
-  margin-bottom: 5px;
-}
-
-/* Styling voor de favorietenknop binnen filmkaart */
-.movie button {
-  margin: 15px;
-  padding: 10px 15px;
-  font-size: 15px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  background-color: #28a745; /* Groen voor 'voeg toe' */
-  color: white;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.movie button:hover {
-  background-color: #218838;
-  transform: translateY(-1px);
-}
-
-/* Specifieke styling voor de verwijderknop in favorieten */
-.movie button.remove-favorite {
-    background-color: #dc3545;
-}
-
-.movie button.remove-favorite:hover {
-    background-color: #c82333;
-}
-
-/* Horizontale lijn tussen secties */
-.section-divider {
-    border: 0;
-    height: 1px;
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0));
-    width: 80%;
-    max-width: 800px;
-    margin: 60px auto;
-}
-
-
-/* Heading voor "Mijn Favorieten" */
-h2 {
+/* --- Main Container --- */
+main {
     width: 100%;
-    text-align: center;
-    margin-top: 50px;
-    margin-bottom: 25px;
-    color: #222;
-    font-size: 2em;
-    font-weight: 700;
+    max-width: 1200px; /* Maximale breedte voor content */
+    margin: 0 auto; /* Centreert de main container */
+    padding: 0 var(--space-md); /* Padding aan zijkanten */
+    flex: 1; /* Neemt beschikbare ruimte tussen header en footer */
+    display: flex;
+    flex-direction: column;
+    margin-top: var(--space-lg); /* Ruimte onder de sticky header */
+    position: relative; /* Voor absolute positionering binnen main */
 }
 
-/* Styling voor het feedbackgebied */
-.message-area {
+/* --- Header / Nav --- */
+header {
     width: 100%;
-    max-width: 800px;
-    text-align: center;
-    margin-bottom: 20px;
-    padding: 10px;
-    font-size: 1.1em;
+    background-color: var(--primary);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 10px var(--shadow);
+}
+
+nav {
+    width: 100%;
+    max-width: 1200px; /* Zelfde als main voor uitlijning */
+    padding: var(--space-md) var(--space-xl);
+    margin: 0 auto; /* Centreert de nav content */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Voor het geval het logo en links niet passen */
+}
+
+.nav-logo {
+    font-size: var(--font-size-xxl);
     font-weight: bold;
-    border-radius: 5px;
+    color: white;
+    text-decoration: none;
+    transition: var(--transition);
 }
 
-/* Styling voor success- en errorberichten */
-.message-area.success {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
+.nav-logo:hover, .nav-logo:focus {
+    opacity: 0.8;
 }
 
-.message-area.error {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
+.nav-links {
+    display: flex;
+    gap: var(--space-lg);
+    align-items: center; /* Zorgt dat themakeuzemenu netjes uitlijnt */
 }
 
-.message-area.info {
-    background-color: #e2e3e5;
-    color: #383d41;
-    border: 1px solid #d6d8db;
+nav a {
+    color: white;
+    font-weight: 500;
+    text-decoration: none;
+    transition: var(--transition);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--border-radius-sm);
 }
 
-/* Nieuwe stijl voor algemene informatiemeldingen binnen containers */
-.info-message { /* TOEVOEGEN */
-    text-align: center;
-    padding: 20px;
-    color: #555;
-    font-size: 1.1em;
-    width: 100%;
-    grid-column: 1 / -1; /* Zorgt dat de melding de volledige breedte inneemt in een grid */
+nav a:hover, nav a.active {
+    background-color: rgba(255, 255, 255, 0.15);
 }
 
+nav a.active {
+    font-weight: bold;
+}
 
-/* Styling voor de laadindicator */
-.loading-indicator {
+/* Hamburger Menu */
+.hamburger-menu {
     display: none;
-    width: 100%;
-    max-width: 800px;
-    text-align: center;
-    padding: 12px;
-    background-color: #ffe08a;
-    color: #775600;
-    font-weight: bold;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 24px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
 }
 
-.loading-indicator.show {
+.hamburger-menu span {
+    display: block;
+    height: 3px;
+    width: 100%;
+    background-color: white;
+    border-radius: 3px;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Hamburger animatie */
+.hamburger-menu.active span:nth-child(1) {
+    transform: translateY(10.5px) rotate(45deg);
+}
+.hamburger-menu.active span:nth-child(2) {
+    opacity: 0;
+}
+.hamburger-menu.active span:nth-child(3) {
+    transform: translateY(-10.5px) rotate(-45deg);
+}
+
+@media (max-width: 768px) {
+    .hamburger-menu {
+        display: flex;
+    }
+    .nav-links {
+        display: none; /* Start verborgen */
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        width: 100%;
+        background-color: var(--primary-dark);
+        flex-direction: column;
+        text-align: center;
+        padding-bottom: var(--space-md);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        z-index: 99;
+    }
+    .nav-links.active { /* Class toegevoegd door JS */
+        display: flex; /* Toon als actief */
+    }
+    .nav-links a {
+        padding: var(--space-md);
+        width: 100%; /* Volledige breedte per link */
+        border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .nav-links a:first-child {
+        border-top: none; /* Geen rand boven de eerste link */
+    }
+}
+
+/* --- Algemene Section Styling --- */
+section, .search-page-section > div:not(.movie-container):not(.observer-target) {
+    width: 100%;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: var(--card-light);
+    padding: var(--space-xl);
+    margin-bottom: var(--space-xl);
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 12px var(--shadow);
+    transition: background-color var(--transition), border-color var(--transition);
+}
+
+body[data-theme="dark"] section,
+body[data-theme="dark"] .search-page-section > div:not(.movie-container):not(.observer-target) {
+    background-color: var(--card-dark);
+}
+
+section h2, .search-page-section > h2 {
+    margin-bottom: var(--space-lg);
+    color: var(--primary);
+    text-align: center;
+}
+
+/* --- Page Sections (voor SPA navigatie) --- */
+.page-section {
+    width: 100%;
+    display: none; /* Wordt beheerd door JS met .active-page */
+}
+.page-section.active-page {
     display: block;
 }
 
-/* Styling voor de film detailpagina */
-.movie-detail-container {
-    background-color: white;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-    padding: 30px;
-    margin-top: 30px;
-    width: 100%;
-    max-width: 900px;
+/* --- Form Styling --- */
+form {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    gap: var(--space-md);
 }
 
-.movie-detail-container button#back-to-search {
-    background-color: #6c757d;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    margin-bottom: 30px;
-    font-size: 1.1em;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.movie-detail-container button#back-to-search:hover {
-    background-color: #5a6268;
-    transform: translateY(-2px);
-}
-
-.detail-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-
-.detail-content img {
-    max-width: 350px;
-    height: auto;
-    border-radius: 10px;
-    margin-bottom: 25px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.detail-content h2 {
-    margin-top: 0;
-    margin-bottom: 15px;
-    font-size: 2.5em;
-    color: #222;
-    font-weight: 700;
-}
-
-.detail-content p {
-    margin-bottom: 10px;
-    font-size: 1.2em;
-    color: #444;
-    line-height: 1.6;
-    max-width: 700px;
-}
-
-.detail-content p strong {
-    color: #333;
-}
-
-/* Knop op detailpagina */
-.detail-content .add-favorite {
-    background-color: #28a745;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 8px;
-    margin-top: 20px;
-    font-size: 1.1em;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.detail-content .add-favorite:hover {
-    background-color: #218838;
-    transform: translateY(-2px);
-}
-
-/* Paginering controls */
-.pagination-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    margin-top: 30px;
-    margin-bottom: 20px;
-    width: 100%;
-    max-width: 1000px;
-}
-
-.pagination-controls button {
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.pagination-controls button:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-    transform: none;
-}
-
-.pagination-controls button:hover:not(:disabled) {
-    background-color: #0056b3;
-    transform: translateY(-2px);
-}
-
-.pagination-controls #page-info {
-    font-size: 1.1em;
+label {
     font-weight: bold;
-    color: #555;
+    margin-bottom: var(--space-xs);
 }
 
-/* Styling voor favorieten zoek- en sorteercontainer */
-.favorites-filter-sort-container {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    justify-content: center;
-    width: 100%;
-    max-width: 1000px;
-    background-color: #ffffff;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-    margin-bottom: 20px;
-}
-
-.favorites-filter-sort-container input,
-.favorites-filter-sort-container select {
-    padding: 12px;
-    font-size: 16px;
-    border-radius: 8px;
-    border: 1px solid #dcdcdc;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    flex-grow: 1;
-    min-width: 200px;
-}
-
-.favorites-filter-sort-container input:focus,
-.favorites-filter-sort-container select:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+select,
+textarea {
+    padding: 0.75rem 1rem;
+    font-size: var(--font-size-md);
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--border-light);
     outline: none;
+    transition: border-color var(--transition), box-shadow var(--transition);
+    width: 100%;
+    background-color: var(--card-light); /* Expliciet voor inputs in lichte modus */
+    color: var(--text-light); /* Expliciet voor inputs in lichte modus */
 }
 
-.favorites-filter-sort-container select {
-    background-color: #e9ecef;
-    color: #333;
-    border-color: #ced4da;
+body[data-theme="dark"] input[type="text"],
+body[data-theme="dark"] input[type="email"],
+body[data-theme="dark"] input[type="password"],
+body[data-theme="dark"] input[type="search"],
+body[data-theme="dark"] select,
+body[data-theme="dark"] textarea {
+    background-color: var(--background-dark); /* Contrast met card-dark */
+    color: var(--text-dark);
+    border-color: var(--border-dark);
 }
 
-.favorites-filter-sort-container select:hover {
-    background-color: #dee2e6;
-    border-color: #a0a0a0;
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="search"]:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--primary);
+    box-shadow: var(--focus-ring);
 }
 
-/* Styling voor de 'Wis alle favorieten' knop */
-.clear-favorites-button {
-    background-color: #dc3545; /* Rood voor 'wissen' */
-    color: white;
-    padding: 12px 20px;
-    border-radius: 8px;
+button, .button {
+    padding: 0.75rem 1.5rem;
+    font-size: var(--font-size-md);
+    border-radius: var(--border-radius-sm);
     border: none;
+    background-color: var(--accent);
+    color: white;
     cursor: pointer;
-    font-size: 1.1em;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    margin-top: 20px; /* Ruimte boven de knop */
-    margin-bottom: 30px; /* Ruimte onder de knop */
-    width: fit-content; /* Pas de breedte aan de inhoud aan */
-    align-self: center; /* Centreer de knop als body een flexbox is */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-weight: bold;
+    transition: background-color var(--transition), transform var(--transition), box-shadow var(--transition);
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
 }
 
-.clear-favorites-button:hover {
-    background-color: #c82333;
+button:hover, .button:hover {
+    background-color: var(--accent-dark);
     transform: translateY(-2px);
 }
 
-.clear-favorites-button:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-    transform: none;
-    opacity: 0.7;
+button:focus, .button:focus {
+    outline: none;
+    box-shadow: var(--focus-ring);
 }
 
-/* Media queries voor responsiviteit */
-@media (max-width: 768px) {
-  .app-header h1 {
-    font-size: 2.8em;
-  }
-  .app-header p {
-    font-size: 1em;
-  }
+button:active, .button:active {
+    transform: translateY(0);
+}
 
-  .search-container,
-  .favorites-filter-sort-container {
+.danger-button {
+    background-color: var(--error);
+}
+.danger-button:hover {
+    background-color: #cc0000;
+}
+
+/* --- Zoeksectie layout --- */
+.search-page-section > div:not(.movie-container):not(.observer-target) {
+    display: flex;
     flex-direction: column;
-    align-items: stretch;
-    padding: 15px;
-    gap: 10px;
-  }
+    gap: var(--space-md);
+}
+.search-controls {
+    display: flex;
+    gap: var(--space-md);
+    align-items: center;
+}
+.search-controls input[type="text"]#search-input {
+    flex-grow: 1;
+}
+.search-controls button#search-button {
+    flex-shrink: 0;
+}
 
-  #search-input,
-  #favorites-search-input {
+.filter-sort-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+}
+
+.filter-item {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+}
+.filter-item label {
+    margin-bottom: var(--space-xs);
+}
+
+/* --- Foutmeldingen en statusmeldingen --- */
+.error-message {
+    color: var(--error);
+    font-size: var(--font-size-sm);
+    font-weight: bold;
+    margin-top: var(--space-xs);
+}
+
+/* --- Laadindicator --- */
+.loading-spinner {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: var(--space-xl);
+    font-weight: bold;
+    text-align: center;
+    flex-direction: column;
+    gap: var(--space-md);
+    color: var(--primary);
+}
+.loading-spinner .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--border-light);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+body[data-theme="dark"] .loading-spinner {
+    color: var(--primary-light);
+}
+body[data-theme="dark"] .loading-spinner .spinner {
+    border-color: var(--border-dark);
+    border-top-color: var(--primary-light);
+}
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* --- Toast Notificaties --- */
+#toast-container {
+    position: fixed;
+    bottom: var(--space-lg);
+    right: var(--space-lg);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    pointer-events: none;
+}
+.toast {
+    padding: var(--space-md) var(--space-lg);
+    border-radius: var(--border-radius);
+    color: white;
+    background-color: var(--text-light);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    min-width: 250px;
+    max-width: 350px;
+    opacity: 0;
+    transform: translateX(120%);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: auto;
+}
+.toast.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+.toast.success { background-color: var(--success); }
+.toast.error { background-color: var(--error); }
+.toast.info { background-color: var(--info); }
+.toast.warning { background-color: var(--warning); }
+
+/* --- Filmcontainer (algemeen) --- */
+.movie-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--space-lg);
     width: 100%;
-    margin-bottom: 0;
-  }
+    margin-top: var(--space-lg);
+}
 
-  .search-container button,
-  .search-container select,
-  .favorites-filter-sort-container select {
+/* --- Movie Card --- */
+.movie {
+    background-color: var(--card-light);
+    border-radius: var(--border-radius);
+    box-shadow: 0 6px 18px var(--shadow);
+    overflow: hidden;
+    transition: transform var(--transition), box-shadow var(--transition);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    cursor: pointer;
+}
+body[data-theme="dark"] .movie {
+    background-color: var(--card-dark);
+}
+.movie:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+.movie:focus-within {
+    box-shadow: 0 0 0 3px var(--primary-light), 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.movie-poster {
     width: 100%;
-    margin-bottom: 0;
-  }
+    height: auto;
+    aspect-ratio: 2/3;
+    object-fit: cover;
+    background-color: var(--border-light);
+}
+body[data-theme="dark"] .movie-poster {
+    background-color: var(--border-dark);
+}
+.movie-poster.lazy-image:not([src]) {
+    opacity: 0.5;
+}
 
-  .movie-container {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 15px;
-  }
+.movie-info {
+    padding: var(--space-md);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+.movie-info h3 {
+    margin: 0 0 var(--space-sm) 0;
+    font-size: var(--font-size-lg);
+    color: var(--primary);
+    line-height: 1.3;
+}
+body[data-theme="dark"] .movie-info h3 {
+    color: var(--primary-light);
+}
 
-  .movie img {
-    height: 220px;
-  }
+.movie-info p {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    color: #555;
+    line-height: 1.5;
+}
+body[data-theme="dark"] .movie-info p {
+    color: #bbb;
+}
 
-  .movie h3 {
-    font-size: 17px;
-    padding: 10px;
-  }
+.movie-overview {
+    font-size: var(--font-size-sm);
+    color: #555;
+    margin-top: var(--space-sm);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.4;
+}
+body[data-theme="dark"] .movie-overview {
+    color: #ccc;
+}
+.movie-popularity {
+    font-size: var(--font-size-sm);
+    color: #777;
+    margin-top: auto;
+    padding-top: var(--space-sm);
+}
+body[data-theme="dark"] .movie-popularity {
+    color: #aaa;
+}
 
-  .movie p {
-    font-size: 13px;
-    padding: 0 10px;
-  }
+/* Skeleton loader */
+.image-skeleton {
+    width: 100%;
+    aspect-ratio: 2/3; /* Behoud dezelfde aspect ratio als de poster */
+    background-color: var(--border-light);
+    border-radius: var(--border-radius-sm);
+    overflow: hidden;
+    position: relative;
+    animation: shimmer 1.5s infinite linear;
+}
 
-  .movie button {
-    padding: 8px 12px;
-    font-size: 13px;
-    margin: 10px;
-  }
+body[data-theme="dark"] .image-skeleton {
+    background-color: var(--border-dark);
+}
 
-  .movie-detail-container {
-    padding: 20px;
-    max-width: 100%;
-  }
+.image-skeleton::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 20%, rgba(255, 255, 255, 0.5) 60%, rgba(255, 255, 255, 0) 100%);
+    animation: shimmer 1.5s infinite linear;
+}
 
-  .detail-content img {
-      max-width: 250px;
-  }
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
 
-  .detail-content h2 {
-      font-size: 2em;
-  }
+/* --- Favorietenknop op kaart (aangepast) --- */
+.add-favorite-button {
+    margin: var(--space-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+    width: auto;
+    align-self: center;
+    padding: 0.5rem 1rem; /* Compactere padding */
+    font-size: var(--font-size-sm); /* Kleinere tekst op knop */
+}
 
-  .detail-content p {
-      font-size: 1em;
-  }
+.add-favorite-button .text {
+    font-size: 0.9em; /* Relatief kleiner voor de tekst */
+    white-space: nowrap; /* Voorkomt tekstafbreking */
+}
 
-  .pagination-controls button {
-      padding: 8px 15px;
-      font-size: 14px;
-  }
+.add-favorite-button .icon {
+    display: inline-block;
+    font-size: 1.2em; /* Grootte van het icoon */
+    line-height: 1;
+}
 
-  .pagination-controls #page-info {
-      font-size: 1em;
-  }
+.add-favorite-button.favorited {
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+}
+.add-favorite-button.favorited .text {
+    font-size: 0.9em; /* Consistentie */
+}
+body[data-theme="dark"] .add-favorite-button.favorited {
+    background-color: var(--accent-dark);
+    color: var(--text-dark);
+}
 
-  .clear-favorites-button {
-      width: 100%;
-      margin-left: 0;
-      margin-right: 0;
-  }
+/* --- Modal Styling --- */
+.modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-md);
+}
+.modal-content {
+    background-color: var(--card-light);
+    padding: var(--space-xl);
+    border-radius: var(--border-radius);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    width: 90%;
+    max-width: 700px;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+body[data-theme="dark"] .modal-content {
+    background-color: var(--card-dark);
+}
+.modal-close-button {
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-lg);
+    color: #aaa;
+    font-size: 2rem;
+    font-weight: bold;
+    background: none;
+    border: none;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+}
+.modal-close-button:hover,
+.modal-close-button:focus {
+    color: var(--text-light);
+}
+body[data-theme="dark"] .modal-close-button:hover,
+body[data-theme="dark"] .modal-close-button:focus {
+    color: var(--text-dark);
+}
+#movie-detail-title {
+    margin-top: 0;
+    margin-bottom: var(--space-lg);
+    color: var(--primary);
+    font-size: var(--font-size-xxl);
+}
+#movie-detail-poster {
+    max-width: 200px;
+    width: 35%;
+    height: auto;
+    float: left;
+    margin-right: var(--space-lg);
+    margin-bottom: var(--space-md);
+    border-radius: var(--border-radius-sm);
+    background-color: var(--border-light);
+}
+body[data-theme="dark"] #movie-detail-poster {
+    background-color: var(--border-dark);
+}
+
+.modal-content p {
+    margin-bottom: var(--space-sm);
+    line-height: 1.6;
+    clear: both;
+}
+.modal-content p strong {
+    color: var(--primary);
+}
+body[data-theme="dark"] .modal-content p strong {
+    color: var(--primary-light);
+}
+#movie-detail-overview {
+    clear: left;
+    padding-top: var(--space-sm);
+}
+.modal-actions {
+    margin-top: var(--space-lg);
+    text-align: right;
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--border-light);
+}
+body[data-theme="dark"] .modal-actions {
+    border-top-color: var(--border-dark);
+}
+#modal-add-favorite-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+    padding: 0.6rem 1.2rem; /* Iets grotere padding dan kaartknop */
+    font-size: var(--font-size-md); /* Normale lettergrootte */
+}
+
+#modal-add-favorite-button.favorited {
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+}
+body[data-theme="dark"] #modal-add-favorite-button.favorited {
+    background-color: var(--accent-dark);
+    color: var(--text-dark);
+}
+
+/* --- Back to top button --- */
+.back-to-top {
+    position: fixed;
+    bottom: var(--space-xl);
+    right: var(--space-lg);
+    left: auto;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: var(--primary);
+    color: white;
+    font-size: var(--font-size-xl);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(100px);
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease, background-color 0.3s;
+    z-index: 90;
+}
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+.back-to-top:hover {
+    background-color: var(--primary-dark);
+}
+
+/* --- Observer Target / Load More Styling --- */
+.observer-target {
+    width: 100%;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    padding: var(--space-xl);
+    margin-top: var(--space-lg);
+    margin-bottom: var(--space-xl);
+    color: var(--primary);
+    font-style: italic;
+    border: 2px dashed var(--border-light);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: opacity 0.5s ease, background-color 0.3s ease, border-color 0.3s ease;
+    display: none;
+}
+.observer-target:hover {
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+    border-color: var(--primary-light);
+}
+body[data-theme="dark"] .observer-target {
+    border-color: var(--border-dark);
+    color: var(--primary-light);
+}
+body[data-theme="dark"] .observer-target:hover {
+    background-color: var(--accent-dark);
+    color: var(--text-dark);
+    border-color: var(--accent-dark);
+}
+
+/* --- No content message --- */
+.no-content-message {
+    text-align: center;
+    padding: var(--space-xl);
+    width: 100%;
+    max-width: 800px; /* Zelfde max-width als section */
+    margin: var(--space-xl) auto; /* Centreer het net als de secties */
+    background-color: var(--card-light);
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 12px var(--shadow);
+}
+body[data-theme="dark"] .no-content-message {
+    background-color: var(--card-dark);
+}
+.no-content-message p {
+    margin-bottom: var(--space-lg);
+    font-size: var(--font-size-lg);
+    color: #777;
+}
+body[data-theme="dark"] .no-content-message p {
+    color: #bbb;
+}
+
+/* --- Footer Styling --- */
+footer {
+    width: 100%;
+    background-color: var(--primary);
+    color: white;
+    text-align: center;
+    padding: var(--space-lg);
+    margin-top: auto;
+}
+
+/* --- Utilities --- */
+.hidden {
+    display: none !important;
+}
+.fade-in {
+    animation: fadeIn 0.5s ease forwards;
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* --- Responsive adjustments --- */
+@media (max-width: 600px) {
+    section, .search-page-section > div:not(.movie-container):not(.observer-target) {
+        padding: var(--space-lg);
+    }
+    .movie-container {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: var(--space-md);
+    }
+    h2, section h2, .search-page-section > h2 {
+        font-size: var(--font-size-xl);
+    }
+    #toast-container {
+        left: var(--space-md);
+        right: var(--space-md);
+        bottom: var(--space-md);
+        width: auto;
+    }
+    .toast {
+        width: 100%;
+        max-width: none;
+    }
+    .filter-sort-container {
+        flex-direction: column;
+    }
+    .filter-item {
+        min-width: 0;
+    }
+    #movie-detail-poster {
+        float: none;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 150px;
+    }
+    .modal-content {
+        padding: var(--space-lg);
+    }
+    /* Zorg dat de knoppen onder carrousels ook mooi zijn op mobiel */
+    .button-container {
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-md);
+    }
 }
 
 @media (max-width: 480px) {
-  body {
-    padding: 10px;
-  }
+    .movie-container {
+        grid-template-columns: 1fr;
+    }
+    .nav-logo {
+        font-size: var(--font-size-xl);
+    }
+    nav {
+        padding: var(--space-md);
+    }
+    button, .button {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
+}
 
-  .app-header h1 {
-    font-size: 2em;
-  }
-  .app-header p {
-    font-size: 0.9em;
-  }
+/* --- Thema-instellingen in de header (AANGEPAST VOOR LEESBAARHEID) --- */
+.theme-settings-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
 
-  .search-container,
-  .favorites-filter-sort-container {
-    padding: 10px;
-    gap: 8px;
-  }
+.theme-settings-header .theme-settings-form {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: 0;
+}
 
-  .movie-container {
-    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-    gap: 10px;
-  }
+.theme-settings-header label.sr-only,
+.theme-settings-header button.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
 
-  .movie img {
-    height: 180px;
-  }
+.theme-settings-header select {
+    background-color: rgba(255, 255, 255, 0.15); /* Semi-transparant op primaire achtergrond */
+    color: white; /* **BELANGRIJK: Witte tekstkleur voor contrast op blauwe header** */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: var(--border-radius-sm);
+    padding: 0.5rem 0.75rem;
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+    transition: background-color var(--transition), border-color var(--transition);
+    width: auto;
+    /* Verberg standaard pijl en voeg custom pijl toe */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); /* Witte pijl */
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1.2em;
+}
 
-  .movie h3 {
-    font-size: 15px;
-    padding: 8px;
-  }
+.theme-settings-header select:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+}
 
-  .movie p {
-    font-size: 11px;
-    padding: 0 8px;
-  }
+.theme-settings-header select:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+}
 
-  .movie button {
-    padding: 6px 10px;
-    font-size: 11px;
-    margin: 8px;
-  }
+/* Donkere modus voor de thema-select in de header */
+body[data-theme="dark"] .theme-settings-header select {
+    background-color: rgba(0, 0, 0, 0.25);
+    color: var(--text-dark); /* **BELANGRIJK: var(--text-dark) voor leesbaarheid in donkere modus** */
+    border-color: rgba(255, 255, 255, 0.4);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23f0f0f0'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); /* Lichtere pijl */
+}
 
-  .movie-detail-container {
-    padding: 15px;
-  }
+/* **BELANGRIJK:** Stijlen voor de opties van het select-menu zelf (wanneer opengeklapt) */
+.theme-settings-header select option {
+    background-color: var(--primary-dark); /* Donkere achtergrond in lichte modus */
+    color: white; /* Witte tekst voor goed contrast */
+}
 
-  .detail-content img {
-      max-width: 180px;
-  }
+body[data-theme="dark"] .theme-settings-header select option {
+    background-color: var(--background-dark); /* Donkere achtergrond in donkere modus */
+    color: var(--text-dark); /* Tekstkleur in donkere modus */
+}
 
-  .detail-content h2 {
-      font-size: 1.8em;
-  }
+/* Media query voor mobiele weergave van de thema-select */
+@media (max-width: 768px) {
+    /* Verberg de thema-instellingen in de normale header op kleine schermen */
+    .theme-settings-header {
+        display: none;
+    }
 
-  .detail-content p {
-      font-size: 0.9em;
-  }
+    /* Stijlen voor de thema-instellingen wanneer ze in het mobiele menu (nav-links) verschijnen.
+        Aangenomen dat je dit element via JavaScript verplaatst. */
+    #theme-settings-mobile { /* Dit is de gekloonde/verplaatste div */
+        display: flex; /* Zorg dat het zichtbaar is */
+        width: 100%;
+        padding: var(--space-md);
+        border-top: 1px solid rgba(255,255,255,0.1);
+        justify-content: center;
+        box-sizing: border-box;
+    }
 
-  .movie-detail-container button#back-to-search,
-  .detail-content .add-favorite {
-      padding: 10px 15px;
-      font-size: 1em;
-  }
+    #theme-settings-mobile .theme-settings-form {
+        flex-direction: row;
+        justify-content: center;
+        width: auto;
+    }
 
-  .pagination-controls {
-      flex-direction: column;
-      gap: 10px;
-  }
+    #theme-settings-mobile select {
+        width: auto;
+        background-color: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    }
+    body[data-theme="dark"] #theme-settings-mobile select {
+        background-color: var(--card-dark);
+        color: var(--text-dark);
+        border-color: var(--border-dark);
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23f0f0f0'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    }
+    body[data-theme="dark"] #theme-settings-mobile select option {
+        background-color: var(--background-dark);
+        color: var(--text-dark);
+    }
+}
+
+/* --- Aanpassingen voor de "Welkom bij Filmder" sectie --- */
+.welcome-section {
+    padding: var(--space-xl); /* Iets meer padding dan eerst */
+    margin-bottom: var(--space-xl);
+    text-align: center;
+}
+
+.welcome-section h2 {
+    font-size: var(--font-size-xxl);
+    margin-bottom: var(--space-md);
+    color: var(--primary);
+}
+
+/* Aanpassingen voor de zoekbalk op de main page */
+.main-page-search-section {
+    max-width: 800px; /* Consistente breedte met andere secties */
+    margin-left: auto;
+    margin-right: auto;
+    background-color: var(--card-light);
+    padding: var(--space-xl);
+    margin-bottom: var(--space-xl);
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 12px var(--shadow);
+    transition: background-color var(--transition), border-color var(--transition);
+}
+body[data-theme="dark"] .main-page-search-section {
+    background-color: var(--card-dark);
+}
+
+.main-page-search-section h2 {
+    font-size: var(--font-size-xxl);
+    margin-bottom: var(--space-lg);
+    text-align: center;
+    color: var(--primary);
+}
+
+.search-controls-main-page {
+    display: flex;
+    gap: var(--space-md);
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.search-controls-main-page input[type="text"] {
+    flex-grow: 1;
+}
+
+.search-controls-main-page button {
+    flex-shrink: 0;
+}
+
+/* Nieuwe styling voor featured sections (Populaire films, Nieuwste releases) */
+.featured-section {
+    width: 100%; /* Volledige breedte, neemt de breedte van de main container over */
+    background-color: var(--card-light);
+    padding: var(--space-xl);
+    margin-bottom: var(--space-xl);
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 12px var(--shadow);
+    transition: background-color var(--transition), border-color var(--transition);
+}
+
+body[data-theme="dark"] .featured-section {
+    background-color: var(--card-dark);
+}
+
+.featured-section h2 {
+    text-align: center;
+    margin-bottom: var(--space-lg);
+    color: var(--primary);
+}
+
+/* Styling voor de carrousel */
+.movie-carousel {
+    display: flex; /* Maak het een flex-container */
+    overflow-x: auto; /* Zorg voor horizontaal scrollen */
+    -webkit-overflow-scrolling: touch; /* Voor soepel scrollen op iOS */
+    scroll-snap-type: x mandatory; /* Snap films vast tijdens scrollen */
+    gap: var(--space-lg); /* Ruimte tussen de filmkaarten */
+    padding-bottom: var(--space-md); /* Ruimte voor scrollbar */
+    padding-left: var(--space-xs); /* Beetje padding aan de zijkanten */
+    padding-right: var(--space-xs);
+    margin-left: calc(-1 * var(--space-md)); /* Overlap met main padding voor full-width look */
+    margin-right: calc(-1 * var(--space-md));
+    width: calc(100% + (2 * var(--space-md))); /* Pas de breedte aan voor de overlap */
+}
+
+/* Individual movie card in carousel */
+.movie-carousel .movie {
+    flex-shrink: 0; /* Voorkom dat films krimpen */
+    width: 220px; /* Vaste breedte voor carrousel items, komt overeen met minmax in movie-container */
+    scroll-snap-align: start; /* Snap de start van elk item */
+    height: auto; /* Laat de hoogte zich aanpassen aan de inhoud */
+    margin-bottom: var(--space-sm); /* Ruimte tussen kaarten en scrollbar */
+}
+
+/* Knoppen onder de carrousels */
+.button-container {
+    text-align: center;
+    margin-top: var(--space-xl);
+    display: flex;
+    justify-content: center;
+}
+
+/* Media query voor kleinere schermen voor de welkomst- en zoeksectie */
+@media (max-width: 600px) {
+    .welcome-section {
+        padding: var(--space-md);
+    }
+
+    .welcome-section h2 {
+        font-size: var(--font-size-xl);
+    }
+
+    .main-page-search-section, .featured-section {
+        padding: var(--space-lg);
+        margin-left: var(--space-md); /* Zorg dat ze binnen de main padding blijven */
+        margin-right: var(--space-md);
+        width: calc(100% - (2 * var(--space-md))); /* Correcte breedte berekening */
+    }
+
+    .movie-carousel {
+        padding-left: var(--space-md); /* Padding aanpassen voor mobiel */
+        padding-right: var(--space-md);
+        margin-left: calc(-1 * var(--space-md)); /* Reset overlap */
+        margin-right: calc(-1 * var(--space-md));
+        width: 100%; /* Volledige breedte binnen de parent */
+        gap: var(--space-md); /* Kleinere gap op mobiel */
+    }
+
+    .movie-carousel .movie {
+        width: 160px; /* Smaller voor mobiele carrousel */
+    }
+
+    .search-controls-main-page {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .search-controls-main-page input,
+    .search-controls-main-page button {
+        width: 100%;
+    }
+}
+
+/* Zorg dat de .active class van nav-links correct werkt */
+nav a.active {
+    background-color: rgba(255, 255, 255, 0.15);
+    font-weight: bold;
 }
