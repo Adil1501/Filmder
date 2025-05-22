@@ -110,6 +110,13 @@ nav {
     color: white;
     text-decoration: none;
     transition: var(--transition);
+    display: inline-block;
+}
+
+.nav-logo img {
+    height: 50px;
+    width: auto;
+    display: block;
 }
 
 .nav-logo:hover, .nav-logo:focus {
@@ -510,6 +517,7 @@ body[data-theme="dark"] .movie-info p {
     margin-top: var(--space-sm);
     display: -webkit-box;
     -webkit-line-clamp: 3;
+    line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -594,6 +602,24 @@ body[data-theme="dark"] .image-skeleton {
 body[data-theme="dark"] .add-favorite-button.favorited {
     background-color: var(--accent-dark);
     color: var(--text-dark);
+}
+/* --- Bekeken lijst --- */
+.toggle-watched-button {
+    /* Eventuele basisstijl voor deze knop, als die afwijkt van .button */
+}
+
+.toggle-watched-button.watched-active {
+    background-color: #5cb85c; /* Bijvoorbeeld groen voor "actief" / "voltooid" */
+    color: white;
+    border-color: #4cae4c;
+}
+
+.toggle-watched-button.watched-active:hover {
+    background-color: #449d44; /* Iets donkerder groen bij hover */
+}
+
+.toggle-watched-button.watched-active .icon {
+    /* Eventueel specifieke stijl voor het icoon in actieve staat */
 }
 
 /* --- Modal Styling --- */
@@ -1146,4 +1172,181 @@ body[data-theme="dark"] .featured-section {
 nav a.active {
     background-color: rgba(255, 255, 255, 0.15);
     font-weight: bold;
+}
+
+/* In style.css */
+
+.features-overview {
+    margin-top: var(--space-lg); /* Ruimte boven deze sectie */
+    padding: var(--space-md) 0; /* Wat verticale padding */
+    font-size: var(--font-size-md); /* Standaard lettergrootte */
+    text-align: left; /* Als de .welcome-section gecentreerd is, wil je dit misschien links */
+    max-width: 650px; /* Voorkom dat de tekst te breed wordt op grote schermen */
+    margin-left: auto; /* Centreer de .features-overview div als deze smaller is dan de parent */
+    margin-right: auto;
+    border-top: 1px solid var(--border-light); /* Subtiele scheidingslijn erboven */
+    margin-top: var(--space-xl);
+    padding-top: var(--space-xl);
+}
+
+body[data-theme="dark"] .features-overview {
+    border-top-color: var(--border-dark);
+}
+
+.features-overview p:first-child { /* De inleidende zin */
+    font-weight: 500; /* Iets dikker lettertype */
+    margin-bottom: var(--space-md);
+    font-size: var(--font-size-lg); /* Iets groter voor de introductie */
+    color: var(--primary);
+}
+body[data-theme="dark"] .features-overview p:first-child {
+    color: var(--primary-light);
+}
+
+.features-overview ul {
+    list-style: none; /* Verwijder standaard browser bolletjes */
+    padding-left: 0;  /* Verwijder standaard browser padding */
+    margin-bottom: var(--space-md);
+}
+
+.features-overview ul li {
+    margin-bottom: var(--space-sm); /* Ruimte tussen de lijstitems */
+    padding-left: var(--space-lg);  /* Ruimte voor een custom icoontje/bullet */
+    position: relative; /* Nodig voor absolute positionering van ::before */
+    line-height: 1.5;
+}
+
+/* Custom opsommingsteken voor de lijstitems */
+.features-overview ul li::before {
+    content: "▹"; /* Of een ander teken zoals "✓", "🎬", etc. */
+    position: absolute;
+    left: 0;
+    top: 1px; /* Fijn-afstemming voor verticale uitlijning */
+    color: var(--accent); /* Gebruik je accentkleur */
+    font-weight: bold;
+    font-size: 1.1em; /* Grootte van het custom opsommingsteken */
+}
+
+.features-overview p:last-child { /* De afsluitende zin */
+    font-style: italic;
+    text-align: center;
+    margin-top: var(--space-lg);
+    color: #555;
+}
+body[data-theme="dark"] .features-overview p:last-child {
+    color: #bbb;
+}
+/* In style.css */
+
+/* Actieknoppen op de filmkaart */
+.movie-actions {
+    display: flex;
+    flex-direction: column; /* NIEUW: Knoppen onder elkaar */
+    align-items: stretch;  /* NIEUW: Knoppen rekken uit over de volledige breedte van .movie-actions */
+    padding: var(--space-sm); /* Padding binnen de actie-container */
+    gap: var(--space-sm);    /* Ruimte tussen de knoppen */
+    border-top: 1px solid var(--border-light);
+}
+body[data-theme="dark"] .movie-actions {
+    border-top-color: var(--border-dark);
+}
+
+.movie-actions .button {
+    /* De algemene .button class levert al veel basisstijlen (padding, font-size, etc.) */
+    /* We zorgen hier dat ze de volledige breedte nemen en tekst centreren */
+    width: 100%; /* Knoppen nemen volledige breedte van .movie-actions */
+    text-align: center;
+    margin: 0; /* Reset eventuele marges direct op de knop als die er waren */
+    
+    /* Om te zorgen voor gelijke hoogte, als de padding van .button al goed is,
+       is dit meestal voldoende. Controleer of font-size en line-height gelijk zijn. */
+    /* Je kunt een vaste hoogte instellen, maar dat is minder flexibel: */
+    /* height: 40px; */ 
+    
+    /* De padding en min-width van de algemene .button class zijn hier belangrijk.
+       Als die goed zijn, zouden de knoppen nu al veel consistenter moeten zijn. */
+}
+
+/* Eventuele specifieke aanpassingen aan tekst/icoon grootte binnen deze kaartknoppen
+   waren al deels aanwezig, zorg dat ze consistent zijn voor beide knoptypes als de
+   globale .button stijl te groot/klein is voor op de kaart. */
+.movie-actions .button .text {
+    font-size: 0.85em; 
+    white-space: nowrap;
+}
+.movie-actions .button .icon {
+    font-size: 1.1em; 
+}
+
+/* De specifieke styling voor .add-favorite-button.favorited en 
+   .toggle-watched-button.watched-active (kleuren etc.) blijft zoals het was. */
+
+/* In style.css */
+.modal-actions {
+    margin-top: var(--space-lg);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--border-light);
+    display: flex;
+    flex-wrap: wrap; /* Laat knoppen wrappen als er niet genoeg ruimte is */
+    justify-content: flex-end; /* Knoppen naar rechts */
+    gap: var(--space-md);
+    clear: both;
+}
+body[data-theme="dark"] .modal-actions {
+    border-top-color: var(--border-dark);
+}
+
+.modal-actions .button {
+    /* De algemene .button class stelt min-width en padding in.
+       Als ze nog steeds onder elkaar staan, zijn ze mogelijk te breed voor de container
+       of de container is te smal. */
+    flex-shrink: 0; /* Voorkom dat knoppen krimpen als ze net niet passen */
+    /* Je kunt hier eventueel een iets kleinere padding of font-size instellen 
+       specifiek voor modalknoppen als dat helpt met de ruimte. */
+}
+
+.button-link-style {
+    background: none;
+    border: none;
+    color: var(--primary);
+    text-decoration: underline;
+    padding: 0;
+    margin-top: var(--space-sm);
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+    min-width: auto; /* Reset min-width van .button */
+}
+body[data-theme="dark"] .button-link-style {
+    color: var(--primary-light);
+}
+.button-link-style:hover {
+    color: var(--accent);
+    background: none; /* Reset hover van .button */
+    transform: none; /* Reset transform van .button */
+}
+
+/* In style.css */
+
+@media (max-width: 768px) {
+    /* ... (andere mobiele stijlen zoals .hamburger-menu { display: flex; } etc.) ... */
+
+    #header-theme-settings-placeholder {
+        display: none !important; /* Verberg de desktop placeholder voor de themakiezer op mobiel */
+    }
+
+    /* Zorg ervoor dat het formulier ZELF goed getoond wordt als het in .nav-links zit */
+    .nav-links #theme-settings-form-header {
+        display: flex; /* Of welke display je ook nodig hebt voor het formulier */
+        flex-direction: column; /* Als je label en select onder elkaar wilt in mobiel menu */
+        align-items: center;
+        padding: var(--space-md) 0;
+        margin-top: var(--space-sm);
+        width: 100%;
+        border-top: 1px solid rgba(255,255,255,0.1); /* Voorbeeld lijn */
+    }
+    .nav-links #theme-settings-form-header select {
+        width: auto; /* Zodat de select niet onnodig breed wordt */
+        max-width: 200px; /* Bijvoorbeeld */
+    }
+    /* ... (andere .nav-links styling) ... */
 }

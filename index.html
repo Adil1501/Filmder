@@ -14,15 +14,16 @@
 <body>
     <header>
         <nav>
-            <a href="#home" id="nav-logo" class="nav-logo">Filmder</a>
+            <a href="#home" id="nav-logo" class="nav-logo">
+                <img src="./src/assets/logo.png" alt="Filmder Logo - Ga naar Home" />
+            </a>
             <div class="nav-links" id="nav-links-controlled">
-                <a href="#search" id="nav-search">🎬 Zoeken</a>
+                <a href="#search" id="nav-search">🎬 Zoeken</a> 
                 <a href="#favorites" id="nav-favorites">📁 Mijn Favorieten</a>
-                </div>
+                <a href="#watched" id="nav-watched">👁️ Mijn Bekeken Films</a>
+            </div>
             <div id="header-theme-settings-placeholder">
-                <div class="theme-settings-header">
-                    <form id="theme-settings-form-header" class="theme-settings-form">
-                        <label for="theme-select-header" class="sr-only">Kies thema:</label>
+                <div class="theme-settings-header"> <form id="theme-settings-form-header" class="theme-settings-form">
                         <select id="theme-select-header" required aria-label="Kies thema">
                             <option value="">-- Thema --</option>
                             <option value="light">Licht</option>
@@ -39,33 +40,42 @@
             </button>
         </nav>
     </header>
-
     <main>
         <section id="main-page-section" class="page-section active-page">
             <section id="user-preference-section" class="welcome-section">
                 <h2 id="greeting-title">Welkom bij Filmder</h2>
-                <form id="name-form">
-                    <label for="username">Je naam:</label>
+                <p id="greeting" aria-live="polite"></p>
+                <div class="features-overview">
+                    <p>Met Filmder ontdek en beheer eenvoudig jouw filmwereld:</p>
+                    <ul>
+                        <li>🎬 Zoek en blader door een uitgebreide collectie films en series.</li>
+                        <li>ℹ️ Bekijk gedetailleerde informatie, beoordelingen,...</li>
+                        <li>📁 Stel je persoonlijke lijst met favoriete films samen.</li>
+                        <li>👁️ Houd bij welke films en series je al hebt bekeken.</li>
+                        <li>🌟 Ontvang aanbevelingen die passen bij jouw smaak (gebaseerd op je favorieten).</li>
+                        <li>🎨 Personaliseer je ervaring met een licht of donker thema.</li>
+                    </ul>
+                    <p>Duik erin en ontdek je volgende filmavond!</p>
+                </div>
+                <form id="name-form"> <label for="username">Je naam:</label>
                     <input type="text" id="username" required aria-label="Voer je naam in" />
                     <button type="submit" aria-label="Naam opslaan">Opslaan</button>
                 </form>
-                <p id="greeting" aria-live="polite"></p>
+                <p id="greeting" aria-live="polite"></p> <button id="edit-name-button" class="button button-link-style hidden">Naam wijzigen?</button> 
             </section>
 
             <section class="main-page-search-section">
                 <h2>Vind je favoriete films</h2>
                 <div class="search-controls-main-page">
-                    <input
-                        type="text"
-                        id="search-input-main-page"
-                        placeholder="Zoek films, genres, acteurs..."
-                        aria-label="Zoek films op de startpagina"
-                    />
+                    <input type="text" id="search-input-main-page" placeholder="Zoek films, series..." aria-label="Zoek films op de startpagina"/>
                     <button type="button" id="search-button-main-page" aria-label="Zoek films">Zoek</button>
-                    <p id="search-error-main-page" class="error-message" aria-live="polite" style="display: none;">
-                        Geef minstens 2 tekens in om te zoeken.
-                    </p>
+                    <p id="search-error-main-page" class="error-message" aria-live="polite" style="display: none;">Geef minstens 2 tekens in om te zoeken.</p>
                 </div>
+            </section>
+
+            <section id="recommended-movies-section" class="featured-section hidden">
+                <h2 id="recommended-movies-title">Aanbevolen voor jou</h2>
+                <div id="recommended-movies-container" class="movie-container movie-carousel"></div>
             </section>
 
             <section class="featured-section">
@@ -81,7 +91,7 @@
             <section class="featured-section">
                 <h2>Nieuwste Releases</h2>
                 <div id="latest-movies-container" class="movie-container movie-carousel">
-                     <div class="movie image-skeleton"></div><div class="movie image-skeleton"></div><div class="movie image-skeleton"></div><div class="movie image-skeleton"></div>
+                       <div class="movie image-skeleton"></div><div class="movie image-skeleton"></div><div class="movie image-skeleton"></div><div class="movie image-skeleton"></div>
                 </div>
                 <div class="button-container">
                     <button class="button" id="discover-latest-button">Bekijk alle nieuwe releases</button>
@@ -111,7 +121,7 @@
             <section class="featured-section">
                 <h2>Drama Films</h2>
                 <div id="drama-movies-container" class="movie-container movie-carousel">
-                     <div class="movie image-skeleton"></div><div class="movie image-skeleton"></div><div class="movie image-skeleton"></div>
+                       <div class="movie image-skeleton"></div><div class="movie image-skeleton"></div><div class="movie image-skeleton"></div>
                 </div>
                 <div class="button-container">
                     <button class="button discover-genre-button" data-genre-name="Drama">Bekijk alle Drama films</button>
@@ -128,15 +138,6 @@
                 </div>
             </section>
 
-            <section id="recommended-movies-section" class="featured-section hidden">
-                <h2>Aanbevolen voor jou</h2>
-                <div id="recommended-movies-container" class="movie-container movie-carousel">
-                </div>
-                <div class="button-container">
-                    <button class="button" id="show-recommended-movies">Bekijk alle aanbevelingen</button>
-                </div>
-            </section>
-
             <section class="browse-genres-section">
                 <h2>Blader door categorieën</h2>
                 <p>Niet zeker wat je wilt kijken? Ontdek films per genre!</p>
@@ -144,22 +145,18 @@
                     <button class="button" id="discover-genres-button">Ontdek alle genres</button>
                 </div>
             </section>
-        </section>
-
-        <section id="search-page-section" class="page-section">
+        </section> <section id="search-page-section" class="page-section">
             <div class="search-controls">
                 <input type="text" id="search-input" placeholder="Zoek films..." aria-label="Zoek films"/>
                 <button type="button" id="search-button" aria-label="Zoek films">Zoek</button>
-                <p id="search-error" class="error-message" aria-live="polite" style="display: none;">
-                    Geef minstens 2 tekens in om te zoeken.
-                </p>
+                <p id="search-error" class="error-message" aria-live="polite" style="display: none;">Geef minstens 2 tekens in om te zoeken.</p>
             </div>
             <div class="filter-sort-container">
                 <div class="filter-item">
                     <label for="genre-select">Filter op genre:</label>
                     <select id="genre-select" aria-label="Filter op genre">
                         <option value="">Alle genres</option>
-                        </select>
+                    </select>
                 </div>
                 <div class="filter-item">
                     <label for="sort-select">Sorteer op:</label>
@@ -176,34 +173,40 @@
             </div>
 
             <h2>Filmresultaten</h2>
-            <div id="movie-container" class="movie-container" aria-live="polite">
-                </div>
+            <div id="movie-container" class="movie-container" aria-live="polite"></div>
             <div id="load-more-trigger" class="observer-target" role="button" tabindex="0">
                 <p>Scroll om meer te laden of klik hier.</p>
             </div>
-        </section>
-
-        <section id="favorites-page-section" class="page-section" style="display: none;">
+        </section> <section id="favorites-page-section" class="page-section" style="display: none;">
             <h2>Mijn Favorieten</h2>
-            <div id="favorites-container" class="movie-container" aria-live="polite">
-                </div>
-        </section>
-
-        <div id="loading-indicator" class="loading-spinner" style="display: none;" aria-live="assertive" aria-label="Bezig met laden">
+            <div class="favorites-actions" style="margin-bottom: 20px; text-align: right;">
+                <button id="clear-all-favorites-button" class="button button-danger">
+                    <span class="icon">🗑️</span> Wis Alle Favorieten
+                </button>
+            </div>
+            <div id="favorites-container" class="movie-container" aria-live="polite"></div>
+        </section> <section id="watched-movies-page-section" class="page-section" style="display: none;">
+            <h2>Mijn Bekeken Films</h2>
+            <div class="watched-actions" style="margin-bottom: 20px; text-align: right;">
+                <button id="clear-all-watched-button" class="button button-danger">
+                    <span class="icon">🗑️</span> Wis Alle Bekeken Films
+                </button>
+            </div>
+            <div id="watched-movies-container" class="movie-container" aria-live="polite"></div>
+        </section> <div id="loading-indicator" class="loading-spinner" style="display: none;" aria-live="assertive" aria-label="Bezig met laden">
             <div class="spinner"></div>
             Laden...
         </div>
-
         <div id="toast-container" aria-live="assertive"></div>
-
         <button id="back-to-top" class="back-to-top" aria-label="Terug naar boven" title="Terug naar boven">↑</button>
     </main>
-
     <footer>
-        <p>&copy; <span id="current-year">2024</span> Filmder - Web Advanced Project</p> </footer>
-
+        <p>&copy; <span id="current-year">2024</span> Filmder - Web Advanced Project</p> 
+    </footer>
     <template id="movie-item-template">
-        <div class="movie movie-card" tabindex="0"> <img src="" alt="" class="movie-poster lazy-image" loading="lazy"> <div class="movie-info">
+        <div class="movie movie-card" tabindex="0"> 
+            <img src="" alt="" class="movie-poster lazy-image" loading="lazy"> 
+            <div class="movie-info">
                 <h3 class="movie-title"></h3>
                 <p class="movie-release-date"></p>
                 <p class="movie-rating"></p>
@@ -212,6 +215,9 @@
             </div>
             <button class="button add-favorite-button">
                 <span class="icon"></span> <span class="text"></span>
+            </button>
+            <button class="button toggle-watched-button" aria-label="Markeer als bekeken" aria-pressed="false">
+                <span class="icon">👁️</span> <span class="text">Bekeken?</span>
             </button>
         </div>
     </template>
@@ -232,10 +238,12 @@
                 <button id="modal-add-favorite-button" class="button">
                     <span class="icon"></span> <span class="text"></span>
                 </button>
+                <button id="modal-toggle-watched-button" class="button" aria-label="Markeer als bekeken" aria-pressed="false">
+                    <span class="icon">👁️</span> <span class="text">Bekeken?</span>
+                </button>
             </div>
         </div>
     </div>
-
     <script type="module" src="./src/js/main.js"></script>
 </body>
 </html>

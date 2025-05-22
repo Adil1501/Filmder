@@ -1,252 +1,128 @@
-# 🎬 Filmder - Interactieve Filmzoeker Webapplicatie (Project Web Advanced)
+# 🎬 Filmder - Interactieve Filmzoeker Webapplicatie
 
-Filmder is een dynamische single-page webapplicatie (SPA) ontworpen om gebruikers te helpen bij het ontdekken, zoeken, filteren en beheren van hun favoriete films. Deze applicatie haalt real-time filmdata op via de **TMDB (The Movie Database) API** en biedt een rijke, interactieve gebruikerservaring.
-
-## 🌐 Live Demo
-
-Bekijk de live demo van Filmder hier:
-👉 [Live Project Link](https://jouw-live-project-url.hier) *(Vervang met je daadwerkelijke deployment link, bv. Vercel, Netlify)*
-
----
+Filmder is een dynamische single-page webapplicatie (SPA) ontworpen om gebruikers te helpen bij het ontdekken, zoeken, filteren en beheren van hun favoriete films en series. Deze applicatie haalt real-time filmdata op via de **TMDB (The Movie Database) API** en biedt een rijke, interactieve gebruikerservaring.
 
 ## 🌟 Functionaliteiten
 
 De Filmder applicatie biedt de volgende kernfunctionaliteiten:
 
 * **Uitgebreide Filmcatalogus:**
-    * Ontdek populaire films, de nieuwste releases, en films per genre direct op de startpagina.
+    * Ontdek populaire films, de nieuwste releases, en films per genre (Actie, Komedie, Drama, Sciencefiction) direct op de startpagina.
+    * Toont aanbevelingen op de hoofdpagina gebaseerd op recent toegevoegde favoriete films.
     * Haalt en toont een breed scala aan filmdata van de TMDB API.
 * **Geavanceerd Zoeken & Filteren:**
-    * Zoek films op titel, trefwoorden, acteurs, etc.
+    * Zoek films en series op titel of trefwoorden.
     * Filter filmresultaten op basis van genre.
     * Sorteer resultaten op populariteit, releasedatum, beoordeling (hoog/laag), en titel (A-Z/Z-A).
 * **Gedetailleerde Filminformatie:**
-    * Bekijk uitgebreide details per film in een modal, inclusief poster, releasedatum, beoordeling, populariteitsscore, originele taal, genres en een volledige synopsis.
+    * Bekijk uitgebreide details per film in een modaal venster, inclusief poster, releasedatum, beoordeling, populariteitsscore, originele taal, genres en een volledige synopsis. (Optioneel: toekomstige uitbreiding voor acteurs/trailers).
 * **Personalisatie:**
-    * **Favorieten:** Markeer films als favoriet en beheer je persoonlijke favorietenlijst. Favorieten worden opgeslagen in `localStorage` en blijven bewaard tussen sessies.
-    * **Gebruikersnaam:** Sla je naam op voor een gepersonaliseerde begroeting.
-    * **Thema Keuze:** Wissel tussen een licht en donker thema voor de applicatie. Thema voorkeur wordt ook opgeslagen.
+    * **Favorieten:** Markeer films als favoriet en beheer een persoonlijke favorietenlijst. Een optie om alle favorieten tegelijk te verwijderen is beschikbaar.
+    * **Bekeken Films:** Markeer films als "bekeken" en bekijk ze op een aparte pagina. Een optie om alle bekeken films te verwijderen is beschikbaar.
+    * **Gebruikersnaam:** Sla een naam op voor een gepersonaliseerde begroeting op de hoofdpagina, met de mogelijkheid om deze later te wijzigen.
+    * **Thema Keuze:** Wissel tussen een licht en donker thema voor de applicatie.
+    * Alle persoonlijke data (favorieten, bekeken films, naam, thema) wordt opgeslagen in `localStorage` en blijft bewaard tussen sessies.
 * **Gebruikerservaring (UX):**
-    * **Single Page Application (SPA):** Naadloze navigatie tussen secties (Home, Zoeken, Favorieten) zonder volledige paginaherlaadingen, gebruikmakend van hash-based routing.
-    * **Responsive Design:** Volledig functioneel en visueel aantrekkelijk op desktops, tablets en mobiele apparaten.
-    * **Lazy Loading:** Afbeeldingen (filmposters) worden "lui" geladen voor betere initiële laadprestaties.
-    * **Infinite Scroll:** Laad meer filmresultaten automatisch bij het scrollen op de zoekpagina.
-    * **Visuele Feedback:** Duidelijke laadindicatoren, skeleton screens (conceptueel) en toast notificaties voor gebruikersacties en API status.
-    * **Toegankelijkheid (A11y):** Gebruik van ARIA-attributen en semantische HTML voor verbeterde toegankelijkheid.
+    * **Single Page Application (SPA):** Naadloze navigatie tussen de secties Home, Zoeken, Mijn Favorieten, en Mijn Bekeken Films zonder volledige paginaherlaadingen, gebruikmakend van hash-based routing.
+    * **Responsive Design:** De applicatie is ontworpen om functioneel en visueel aantrekkelijk te zijn op desktops, tablets en mobiele apparaten.
+    * **Lazy Loading van Afbeeldingen:** Filmposters maken gebruik van het `loading="lazy"` attribuut voor betere initiële laadprestaties.
+    * **Infinite Scroll & Klikbare "Load More":** Laad meer filmresultaten automatisch bij het scrollen op de zoekpagina, of door op de "laad meer" trigger te klikken.
+    * **Visuele Feedback:** Duidelijke laadindicatoren (spinners), skeleton placeholders voor afbeeldingen, en toast notificaties voor gebruikersacties, API-status en foutmeldingen.
+    * **Debounced Zoekinput:** API-verzoeken voor de zoekfunctie worden pas verstuurd nadat de gebruiker kort stopt met typen, wat de gebruikerservaring verbetert en het aantal API-calls reduceert.
+    * **Toegankelijkheid (A11y):** Toepassing van semantische HTML-elementen en ARIA-attributen (zoals `aria-label`, `aria-live`, `aria-expanded`, `role`) om de toegankelijkheid voor hulptechnologieën te verbeteren.
 
 ---
 
 ## 🖼️ Screenshots
 
-*(Voeg hier screenshots toe van je applicatie. Voorbeelden:)*
 * *Afbeelding 1: Startpagina met filmcarrousels.*
+![alt text](</public/Capture d'écran 2025-05-22 233137.png>)
+
 * *Afbeelding 2: Zoekpagina met resultaten en filters.*
-* *Afbeelding 3: Detailpagina van een film (modal).*
+![alt text](</public/Capture d'écran 2025-05-22 233338.png>)
+
+* *Afbeelding 3: Detailpagina van een film.*
+![alt text](</public/Capture d'écran 2025-05-22 233252.png>)
+
 * *Afbeelding 4: Favorietenpagina.*
-* *Afbeelding 5: Applicatie in donker thema.*
+![alt text](</public/Capture d'écran 2025-05-22 233308.png>)
+
 * *Afbeelding 6: Mobiele weergave.*
+![alt text](</public/Capture d'écran 2025-05-22 234011.png>)
 
 ---
 
 ## 🛠️ Gebruikte Technologieën & API
 
 ### Kerntechnologieën:
-* **HTML5:** Semantische structuur en content.
-* **CSS3:** Styling, theming, responsive design (Flexbox, Grid, Custom Properties).
-* **JavaScript (ES6+):** Applicatielogica, DOM-manipulatie, API-interactie, en moderne features.
+* **HTML:** Voor de semantische structuur en content van de webapplicatie.
+* **CSS:** Voor styling, layout (middels Flexbox en Grid), thematisering (via Custom Properties), animaties, en responsive design.
+* **JavaScript:** Voor de volledige applicatielogica, DOM-manipulatie, interactie met de TMDB API, en het gebruik van moderne JavaScript features.
 
 ### Tools & Libraries:
-* **Vite:** Snelle frontend build tool en development server.
+* **Vite:** Als snelle frontend build tool en development server.
 
 ### Externe API:
-* **TMDB (The Movie Database) API:**
+* **TMDB (The Movie Database) API:** De primaire bron voor alle film- en seriedata.
     * Website: [The Movie Database API](https://www.themoviedb.org/documentation/api)
-    * Developer Docs: [TMDB Developer Docs](https://developer.themoviedb.org/docs)
-    * Gebruikte Endpoints (voorbeelden):
-        * `/movie/popular` (voor populaire films)
-        * `/discover/movie` (voor nieuwste releases, films per genre, sorteren)
-        * `/search/movie` (voor zoekfunctionaliteit)
-        * `/genre/movie/list` (voor het ophalen van alle genres)
-        * `/movie/{movie_id}` (voor gedetailleerde filminformatie)
+    * Developer Documentatie: [TMDB Developer Docs](https://developer.themoviedb.org/docs)
+    * Gebruikte Endpoints (een selectie):
+        * `/discover/movie` (o.a. voor populaire films, nieuwste releases, films per genre, sorteren)
+        * `/search/movie` (voor de zoekfunctionaliteit op trefwoord)
+        * `/genre/movie/list` (voor het ophalen van de lijst met beschikbare filmgenres)
+        * `/movie/{movie_id}` (voor gedetailleerde informatie per film, inclusief `append_to_response=credits,videos`)
+        * `/movie/{movie_id}/recommendations` (voor het ophalen van aanbevolen films)
 
 ### Browser Features:
-* **Fetch API:** Voor het maken van HTTP-verzoeken naar de TMDB API.
-* **LocalStorage API:** Voor het persistent opslaan van gebruikersfavorieten, naam en themavoorkeur.
-* **Intersection Observer API:** Voor lazy loading van afbeeldingen en het triggeren van infinite scroll.
-* **Template Element:** Voor het efficiënt creëren van herbruikbare HTML-structuren (filmkaarten).
+* **Fetch API:** Voor het uitvoeren van asynchrone HTTP-verzoeken naar de TMDB API.
+* **LocalStorage API:** Voor het client-side opslaan van gebruikersvoorkeuren (naam, thema) en lijsten (favorieten, bekeken films), zodat deze bewaard blijven tussen sessies.
+* **Intersection Observer API:** Geïmplementeerd voor de "infinite scroll" functionaliteit op de zoekpagina.
+* **`<template>` Element:** Gebruikt voor het efficiënt en herbruikbaar genereren van de HTML-structuur voor filmkaarten.
+* **URL Hash (Location API & `hashchange` event):** Voor het implementeren van client-side routing binnen de Single Page Application.
 
 ---
 
 ## ✅ Technische Vereisten & Implementatie
 
-| Concept                       | Bestand(en)         | Voorbeeld Regel(s) / Locatie (main.js tenzij anders vermeld)                      | Korte Beschrijving Implementatie                                                                 |
-| :---------------------------- | :------------------ | :------------------------------------------------------------------------------ | :----------------------------------------------------------------------------------------------- |
-| **Structuur & Setup** |                     |                                                                                 |                                                                                                  |
-| Project met Vite              | `package.json`, `vite.config.js` | Project setup                                                                 | Applicatie gebouwd en geserveerd met Vite.                                                       |
-| Folderstructuur               | Gehele project      | `src/css`, `src/js`, `src/assets`                                               | Logische scheiding van bestanden voor HTML, CSS, JavaScript en assets.                           |
-| **HTML** |                     |                                                                                 |                                                                                                  |
-| Semantische HTML5             | `index.html`        | `<header>`, `<nav>`, `<main>`, `<section>`, `<footer>`, `<button>`, `<template>` | Gebruik van semantische elementen voor structuur en betekenis.                                   |
-| **CSS** |                     |                                                                                 |                                                                                                  |
-| CSS Custom Properties         | `style.css`         | `:root { --primary: ...; }`, `var(--primary)`                                   | Uitgebreid gebruik voor theming (licht/donker) en consistente styling.                           |
-| Responsive Design             | `style.css`         | `@media (max-width: ...)`                                                       | Flexbox, Grid en media queries voor aanpasbare layout op verschillende schermformaten.             |
-| **JavaScript Algemeen** |                     |                                                                                 |                                                                                                  |
-| DOM Selectie                  | `main.js`           | Lijnen ~5-70 (DOM Elements sectie)                                              | Selectie van HTML-elementen via `getElementById`, `querySelector`.                             |
-| DOM Manipulatie               | `main.js`           | `displayMovies()`, `showMovieDetailModal()`, `applyTheme()`                       | Dynamisch content en attributen van elementen aanpassen, elementen toevoegen/verwijderen.        |
-| Event Listeners               | `main.js`           | Lijnen ~700+ (Event Listeners sectie)                                           | Koppelen van functies aan gebruikersinteracties (klik, change, scroll, submit).                  |
-| **Modern JavaScript (ES6+)** |                     |                                                                                 |                                                                                                  |
-| `const` / `let`               | `main.js`           | Overal                                                                          | Gebruik van block-scoped variabelen.                                                             |
-| Arrow Functions               | `main.js`           | Overal, e.g., `() => {...}` in event listeners                                  | Compacte syntax voor functies.                                                                   |
-| Template Literals             | `main.js`           | `WorkspaceFromTMDB()`: `\`${BASE_URL}${endpoint}\``, `displayMovies()`                 | Makkelijk samenstellen van strings met variabelen.                                                 |
-| Array Methods                 | `main.js`           | `favoriteMovies.some()`, `allGenres.forEach()`, `data.results.slice()`          | `forEach`, `map`, `filter`, `find`, `some`, `findIndex`, `slice` voor dataverwerking.           |
-| Destructuring (optioneel)     | `main.js`           | (Kan gebruikt worden bij object/array uitlezing)                                | Uitpakken van waarden uit arrays of properties van objecten in variabelen.                      |
-| Spread/Rest operator (optioneel) | `main.js`        | (Kan gebruikt worden voor array/object manipulatie)                             | Flexibel werken met lijsten van argumenten of elementen.                                         |
-| Modules (impliciet via Vite)  | `index.html`, `main.js` | `<script type="module" src="./src/js/main.js"></script>`                       | JavaScript is opgezet als een module, wat Vite standaard doet.                                   |
-| **Asynchroon JavaScript** |                     |                                                                                 |                                                                                                  |
-| Promises                      | `main.js`           | `Workspace()` retourneert een Promise                                               | Basis van asynchrone operaties.                                                                  |
-| `async` / `await`             | `main.js`           | `WorkspaceFromTMDB()`, `WorkspaceMovies()`, `showMovieDetailModal()`                      | Syntactische suiker over Promises voor schonere asynchrone code.                                 |
-| **API & Data** |                     |                                                                                 |                                                                                                  |
-| Fetch API                     | `main.js`           | `WorkspaceFromTMDB()`                                                               | Ophalen van data van de TMDB API.                                                                |
-| JSON Manipulatie              | `main.js`           | `response.json()`, verwerking van API data                                      | Converteren van JSON responses naar JavaScript objecten en dataverwerking.                       |
-| **Browser Features** |                     |                                                                                 |                                                                                                  |
-| LocalStorage                  | `main.js`           | `localStorage.setItem()`, `localStorage.getItem()` in `toggleFavorite()`, `applyTheme()`, `loadUserName()` | Opslaan en ophalen van favorieten, themavoorkeur en gebruikersnaam.                          |
-| Formulier Validatie           | `main.js`, `index.html` | `handleNameFormSubmit()`, `performSearch()`, `required` attribuut               | Client-side validatie van input (naam, zoekterm lengte, thema selectie).                        |
-| Intersection Observer API     | `main.js`           | `setupIntersectionObserver()`, `handleIntersection()` (impliciet)               | Lazy loading van afbeeldingen (via `loading="lazy"`) & infinite scroll (`loadMoreTrigger`).    |
-| Hash-based Routing            | `main.js`           | `handleHashChange()`, `window.addEventListener('hashchange', ...)`              | Navigatie binnen de SPA via URL hashes (bv. `#search`, `#favorites`).                            |
-| **Gebruikerservaring** |                     |                                                                                 |                                                                                                  |
-| Toast Notificaties            | `main.js`           | `showToast()`                                                                   | Feedback aan gebruiker over acties.                                                              |
-| Laadindicator                 | `main.js`           | `showLoading()`, `hideLoading()`                                                | Visuele indicatie tijdens data ophalen.                                                          |
-| Toegankelijkheid (ARIA)       | `index.html`        | `aria-label`, `aria-live`, `aria-modal`, `aria-hidden`                          | Verbeteren van toegankelijkheid voor screenreaders en andere hulptechnologieën.                    |
-
----
-
-## 📁 Projectstructuur
-Partenaire de code
-
-Afficher le raisonnement
-Oké, laten we die README.md perfectioneren!
-
-Op basis van je code en de vereisten, hier is een voorgestelde, uitgebreide README.md. Ik heb geprobeerd de beste elementen van je twee versies te combineren en aan te vullen waar nodig.
-
-Markdown
-
-# 🎬 Filmder - Interactieve Filmzoeker Webapplicatie (Project Web Advanced)
-
-Filmder is een dynamische single-page webapplicatie (SPA) ontworpen om gebruikers te helpen bij het ontdekken, zoeken, filteren en beheren van hun favoriete films. Deze applicatie haalt real-time filmdata op via de **TMDB (The Movie Database) API** en biedt een rijke, interactieve gebruikerservaring.
-
-## 🌐 Live Demo
-
-Bekijk de live demo van Filmder hier:
-👉 [Live Project Link](https://jouw-live-project-url.hier) *(Vervang met je daadwerkelijke deployment link, bv. Vercel, Netlify)*
-
----
-
-## 🌟 Functionaliteiten
-
-De Filmder applicatie biedt de volgende kernfunctionaliteiten:
-
-* **Uitgebreide Filmcatalogus:**
-    * Ontdek populaire films, de nieuwste releases, en films per genre direct op de startpagina.
-    * Haalt en toont een breed scala aan filmdata van de TMDB API.
-* **Geavanceerd Zoeken & Filteren:**
-    * Zoek films op titel, trefwoorden, acteurs, etc.
-    * Filter filmresultaten op basis van genre.
-    * Sorteer resultaten op populariteit, releasedatum, beoordeling (hoog/laag), en titel (A-Z/Z-A).
-* **Gedetailleerde Filminformatie:**
-    * Bekijk uitgebreide details per film in een modal, inclusief poster, releasedatum, beoordeling, populariteitsscore, originele taal, genres en een volledige synopsis.
-* **Personalisatie:**
-    * **Favorieten:** Markeer films als favoriet en beheer je persoonlijke favorietenlijst. Favorieten worden opgeslagen in `localStorage` en blijven bewaard tussen sessies.
-    * **Gebruikersnaam:** Sla je naam op voor een gepersonaliseerde begroeting.
-    * **Thema Keuze:** Wissel tussen een licht en donker thema voor de applicatie. Thema voorkeur wordt ook opgeslagen.
-* **Gebruikerservaring (UX):**
-    * **Single Page Application (SPA):** Naadloze navigatie tussen secties (Home, Zoeken, Favorieten) zonder volledige paginaherlaadingen, gebruikmakend van hash-based routing.
-    * **Responsive Design:** Volledig functioneel en visueel aantrekkelijk op desktops, tablets en mobiele apparaten.
-    * **Lazy Loading:** Afbeeldingen (filmposters) worden "lui" geladen voor betere initiële laadprestaties.
-    * **Infinite Scroll:** Laad meer filmresultaten automatisch bij het scrollen op de zoekpagina.
-    * **Visuele Feedback:** Duidelijke laadindicatoren, skeleton screens (conceptueel) en toast notificaties voor gebruikersacties en API status.
-    * **Toegankelijkheid (A11y):** Gebruik van ARIA-attributen en semantische HTML voor verbeterde toegankelijkheid.
-
----
-
-## 🖼️ Screenshots
-
-*(Voeg hier screenshots toe van je applicatie. Voorbeelden:)*
-* *Afbeelding 1: Startpagina met filmcarrousels.*
-* *Afbeelding 2: Zoekpagina met resultaten en filters.*
-* *Afbeelding 3: Detailpagina van een film (modal).*
-* *Afbeelding 4: Favorietenpagina.*
-* *Afbeelding 5: Applicatie in donker thema.*
-* *Afbeelding 6: Mobiele weergave.*
-
----
-
-## 🛠️ Gebruikte Technologieën & API
-
-### Kerntechnologieën:
-* **HTML5:** Semantische structuur en content.
-* **CSS3:** Styling, theming, responsive design (Flexbox, Grid, Custom Properties).
-* **JavaScript (ES6+):** Applicatielogica, DOM-manipulatie, API-interactie, en moderne features.
-
-### Tools & Libraries:
-* **Vite:** Snelle frontend build tool en development server.
-
-### Externe API:
-* **TMDB (The Movie Database) API:**
-    * Website: [The Movie Database API](https://www.themoviedb.org/documentation/api)
-    * Developer Docs: [TMDB Developer Docs](https://developer.themoviedb.org/docs)
-    * Gebruikte Endpoints (voorbeelden):
-        * `/movie/popular` (voor populaire films)
-        * `/discover/movie` (voor nieuwste releases, films per genre, sorteren)
-        * `/search/movie` (voor zoekfunctionaliteit)
-        * `/genre/movie/list` (voor het ophalen van alle genres)
-        * `/movie/{movie_id}` (voor gedetailleerde filminformatie)
-
-### Browser Features:
-* **Fetch API:** Voor het maken van HTTP-verzoeken naar de TMDB API.
-* **LocalStorage API:** Voor het persistent opslaan van gebruikersfavorieten, naam en themavoorkeur.
-* **Intersection Observer API:** Voor lazy loading van afbeeldingen en het triggeren van infinite scroll.
-* **Template Element:** Voor het efficiënt creëren van herbruikbare HTML-structuren (filmkaarten).
-
----
-
-## ✅ Technische Vereisten & Implementatie
-
-| Concept                       | Bestand(en)         | Voorbeeld Regel(s) / Locatie (main.js tenzij anders vermeld)                      | Korte Beschrijving Implementatie                                                                 |
-| :---------------------------- | :------------------ | :------------------------------------------------------------------------------ | :----------------------------------------------------------------------------------------------- |
-| **Structuur & Setup** |                     |                                                                                 |                                                                                                  |
-| Project met Vite              | `package.json`, `vite.config.js` | Project setup                                                                 | Applicatie gebouwd en geserveerd met Vite.                                                       |
-| Folderstructuur               | Gehele project      | `src/css`, `src/js`, `src/assets`                                               | Logische scheiding van bestanden voor HTML, CSS, JavaScript en assets.                           |
-| **HTML** |                     |                                                                                 |                                                                                                  |
-| Semantische HTML5             | `index.html`        | `<header>`, `<nav>`, `<main>`, `<section>`, `<footer>`, `<button>`, `<template>` | Gebruik van semantische elementen voor structuur en betekenis.                                   |
-| **CSS** |                     |                                                                                 |                                                                                                  |
-| CSS Custom Properties         | `style.css`         | `:root { --primary: ...; }`, `var(--primary)`                                   | Uitgebreid gebruik voor theming (licht/donker) en consistente styling.                           |
-| Responsive Design             | `style.css`         | `@media (max-width: ...)`                                                       | Flexbox, Grid en media queries voor aanpasbare layout op verschillende schermformaten.             |
-| **JavaScript Algemeen** |                     |                                                                                 |                                                                                                  |
-| DOM Selectie                  | `main.js`           | Lijnen ~5-70 (DOM Elements sectie)                                              | Selectie van HTML-elementen via `getElementById`, `querySelector`.                             |
-| DOM Manipulatie               | `main.js`           | `displayMovies()`, `showMovieDetailModal()`, `applyTheme()`                       | Dynamisch content en attributen van elementen aanpassen, elementen toevoegen/verwijderen.        |
-| Event Listeners               | `main.js`           | Lijnen ~700+ (Event Listeners sectie)                                           | Koppelen van functies aan gebruikersinteracties (klik, change, scroll, submit).                  |
-| **Modern JavaScript (ES6+)** |                     |                                                                                 |                                                                                                  |
-| `const` / `let`               | `main.js`           | Overal                                                                          | Gebruik van block-scoped variabelen.                                                             |
-| Arrow Functions               | `main.js`           | Overal, e.g., `() => {...}` in event listeners                                  | Compacte syntax voor functies.                                                                   |
-| Template Literals             | `main.js`           | `WorkspaceFromTMDB()`: `\`${BASE_URL}${endpoint}\``, `displayMovies()`                 | Makkelijk samenstellen van strings met variabelen.                                                 |
-| Array Methods                 | `main.js`           | `favoriteMovies.some()`, `allGenres.forEach()`, `data.results.slice()`          | `forEach`, `map`, `filter`, `find`, `some`, `findIndex`, `slice` voor dataverwerking.           |
-| Destructuring (optioneel)     | `main.js`           | (Kan gebruikt worden bij object/array uitlezing)                                | Uitpakken van waarden uit arrays of properties van objecten in variabelen.                      |
-| Spread/Rest operator (optioneel) | `main.js`        | (Kan gebruikt worden voor array/object manipulatie)                             | Flexibel werken met lijsten van argumenten of elementen.                                         |
-| Modules (impliciet via Vite)  | `index.html`, `main.js` | `<script type="module" src="./src/js/main.js"></script>`                       | JavaScript is opgezet als een module, wat Vite standaard doet.                                   |
-| **Asynchroon JavaScript** |                     |                                                                                 |                                                                                                  |
-| Promises                      | `main.js`           | `Workspace()` retourneert een Promise                                               | Basis van asynchrone operaties.                                                                  |
-| `async` / `await`             | `main.js`           | `WorkspaceFromTMDB()`, `WorkspaceMovies()`, `showMovieDetailModal()`                      | Syntactische suiker over Promises voor schonere asynchrone code.                                 |
-| **API & Data** |                     |                                                                                 |                                                                                                  |
-| Fetch API                     | `main.js`           | `WorkspaceFromTMDB()`                                                               | Ophalen van data van de TMDB API.                                                                |
-| JSON Manipulatie              | `main.js`           | `response.json()`, verwerking van API data                                      | Converteren van JSON responses naar JavaScript objecten en dataverwerking.                       |
-| **Browser Features** |                     |                                                                                 |                                                                                                  |
-| LocalStorage                  | `main.js`           | `localStorage.setItem()`, `localStorage.getItem()` in `toggleFavorite()`, `applyTheme()`, `loadUserName()` | Opslaan en ophalen van favorieten, themavoorkeur en gebruikersnaam.                          |
-| Formulier Validatie           | `main.js`, `index.html` | `handleNameFormSubmit()`, `performSearch()`, `required` attribuut               | Client-side validatie van input (naam, zoekterm lengte, thema selectie).                        |
-| Intersection Observer API     | `main.js`           | `setupIntersectionObserver()`, `handleIntersection()` (impliciet)               | Lazy loading van afbeeldingen (via `loading="lazy"`) & infinite scroll (`loadMoreTrigger`).    |
-| Hash-based Routing            | `main.js`           | `handleHashChange()`, `window.addEventListener('hashchange', ...)`              | Navigatie binnen de SPA via URL hashes (bv. `#search`, `#favorites`).                            |
-| **Gebruikerservaring** |                     |                                                                                 |                                                                                                  |
-| Toast Notificaties            | `main.js`           | `showToast()`                                                                   | Feedback aan gebruiker over acties.                                                              |
-| Laadindicator                 | `main.js`           | `showLoading()`, `hideLoading()`                                                | Visuele indicatie tijdens data ophalen.                                                          |
-| Toegankelijkheid (ARIA)       | `index.html`        | `aria-label`, `aria-live`, `aria-modal`, `aria-hidden`                          | Verbeteren van toegankelijkheid voor screenreaders en andere hulptechnologieën.                    |
+Deze tabel licht toe hoe verschillende technische JavaScript-concepten zijn toegepast in het project.
+| Concept                     | Bestand(en)             | Voorbeeld in Code (Functie / Concept)                                  | Korte Beschrijving Implementatie                                                                     |
+| :-------------------------- | :---------------------- | :--------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------- |
+| **Structuur & Setup** |                         |                                                                        |                                                                                                      |
+| Project met Vite            | `package.json`, etc.    | Project setup                                                          | Applicatie ontwikkeld en geserveerd met Vite.                                                        |
+| Folderstructuur             | Gehele project          | `public/`, `src/css/`, `src/js/`                                       | Logische scheiding van publieke assets, stylesheets en JavaScript-bestanden.                           |
+| **HTML** |                         |                                                                        |                                                                                                      |
+| Semantische HTML5           | `index.html`            | `<header>`, `<nav>`, `<main>`, `<section>`, `<footer>`, `<button>`, `<template>` | Gebruik van correcte HTML5-elementen voor een duidelijke structuur en betekenis.                       |
+| **CSS** |                         |                                                                        |                                                                                                      |
+| CSS Custom Properties       | `style.css`             | `:root { --primary: ...; }`, `var(--primary)`                          | Uitgebreid gebruik voor theming (licht/donker), afstanden, en consistente styling.                   |
+| Responsive Design           | `style.css`             | `@media (max-width: ...)`                                              | Gebruik van Flexbox, Grid, en media queries voor een optimale weergave op diverse schermformaten.     |
+| **JavaScript Algemeen** |                         |                                                                        |                                                                                                      |
+| DOM Selectie                | `main.js`               | `// === DOM Elementen ===` sectie bovenaan                             | Consistente selectie van HTML-elementen via `getElementById`, `querySelector`.                       |
+| DOM Manipulatie             | `main.js`               | `displayMovies()`, `showMovieDetailModal()`, `applyTheme()`, `showToast()` | Dynamisch aanpassen van content, attributen, en structuur van de DOM.                                 |
+| Event Listeners             | `main.js`               | `setupEventListeners()` functie en diverse individuele listeners         | Koppelen van functies aan gebruikersinteracties (klik, input, change, scroll, submit).               |
+| **Modern JavaScript (ES6+)**|                         |                                                                        |                                                                                                      |
+| `const` / `let`             | `main.js`               | Consistent gebruik door het hele script                                  | Gebruik van block-scoped variabelen voor betere codeveiligheid en leesbaarheid.                   |
+| Arrow Functions             | `main.js`               | Veelvuldig in event listeners en callbacks, bijv. `(e) => {...}`         | Compacte syntax voor functies, behoud van `this` context waar relevant.                               |
+| Template Literals           | `main.js`               | `WorkspaceFromTMDB()` (URL opbouw), `showToast()` (berichten)                 | Eenvoudig en leesbaar samenstellen van strings met ingebedde JavaScript expressies.                    |
+| Array Methods               | `main.js`               | `forEach`, `map`, `find`, `some`, `findIndex`, `slice`                    | Efficiënte dataverwerking en iteratie over arrays (bijv. `favoriteMovies`, `allGenres`, API resultaten). |
+| Destructuring               | `main.js`               | (Beperkt, bijv. in `const { id, title } = movie` indien toegepast)       | Kan gebruikt worden voor het eenvoudig uitpakken van waarden uit objecten of arrays.                  |
+| Spread/Rest Operator        | `main.js`               | `debounce(...args)`, `WorkspaceAndDisplaySectionMovies({...params})`          | Voor het flexibel doorgeven van functieargumenten en het samenvoegen/kopiëren van objecten/arrays.      |
+| Modules (via Vite)          | `index.html`, `main.js` | `<script type="module" ...>`                                           | JavaScript code is opgezet als een ES-module, wat standaard is voor Vite-projecten.                   |
+| **Asynchroon JavaScript** |                         |                                                                        |                                                                                                      |
+| Promises                    | `main.js`               | `Workspace()` in `WorkspaceFromTMDB()` retourneert een Promise                    | Fundament voor het afhandelen van asynchrone operaties zoals API-verzoeken.                           |
+| `async` / `await`           | `main.js`               | `WorkspaceFromTMDB()`, `WorkspaceMovies()`, `initializeMainPageSections()`, etc. | Maakt asynchrone code beter leesbaar en schrijfbaar, alsof het synchroon is.                        |
+| **API & Data** |                         |                                                                        |                                                                                                      |
+| Fetch API                   | `main.js`               | `WorkspaceFromTMDB()`                                                      | Gebruikt voor het ophalen van filmdata van de externe TMDB API.                                      |
+| JSON Manipulatie            | `main.js`               | `response.json()`, `JSON.parse()`, `JSON.stringify()`                  | Converteren van JSON data van de API naar JavaScript objecten en vice versa voor `localStorage`.     |
+| **Browser Features** |                         |                                                                        |                                                                                                      |
+| LocalStorage                | `main.js`               | `toggleFavorite()`, `toggleWatched()`, `applyTheme()`, `handleNameFormSubmit()` | Persistent opslaan van gebruikersdata (favorieten, bekeken, thema, naam) in de browser.          |
+| Formulier Validatie (basis) | `main.js`, `index.html` | `performSearch()` (min. lengte), `handleNameFormSubmit()` (naam vereist)  | Client-side controles op gebruikersinvoer om ongeldige data te voorkomen.                           |
+| Intersection Observer       | `main.js`               | `setupIntersectionObserver()`                                          | Efficiënt implementeren van "infinite scroll" functionaliteit.                                        |
+| Hash-based Routing          | `main.js`               | `handleHashChange()`, `window.addEventListener('hashchange', ...)`       | Navigatie binnen de Single Page Application zonder volledige paginaherlaadingen.                     |
+| **Gebruikerservaring** |                         |                                                                        |                                                                                                      |
+| Toast Notificaties          | `main.js`               | `showToast()`                                                          | Korte, niet-intrusieve feedbackberichten aan de gebruiker.                                            |
+| Laadindicator               | `main.js`               | `showLoading()`, `hideLoading()`                                       | Visuele indicatie (spinner) dat de applicatie bezig is met het ophalen van data.                   |
+| Debouncing                  | `main.js`               | `debounce()` functie toegepast op zoekinput                             | Optimaliseert API-aanroepen bij zoekopdrachten.                                                      |
+| Toegankelijkheid (ARIA)     | `index.html`, `main.js` | `aria-label`, `aria-live`, `aria-expanded`, `role`, etc.                | Toepassing van ARIA-attributen om de toegankelijkheid voor diverse gebruikers te verbeteren.        |
 
 ---
 
@@ -254,21 +130,21 @@ De Filmder applicatie biedt de volgende kernfunctionaliteiten:
 
 filmder/
 │
-├── index.html                      # Hoofd HTML-bestand voor de Single Page Application
-├── package.json                    # Project metadata en dependencies
-├── vite.config.js                  # Vite configuratiebestand
-├── .env.example                    # Voorbeeld voor environment variabelen (bv. API key)
-├── README.md                       # Deze documentatie
+├── public/                      # Map voor statische assets (direct gekopieerd naar build output)
+├── src/                         # Map voor de broncode
+│   ├── assets/   
+│   │   ├── favicon.ico 
+│   │   └── logo.png 
+│   ├── css/
+│   │   └── style.css            # Hoofd CSS-bestand voor alle styling
+│   └── js/
+│       └── main.js              # Hoofd JavaScript-bestand met de applicatielogica
 │
-└── src/
-├── css/
-│   └── style.css               # Hoofd CSS-bestand voor alle styling
-│
-├── js/
-│   └── main.js                 # Hoofd JavaScript-bestand met alle applicatielogica
-│
-└── assets/                     # Map voor statische assets zoals favicon
-└── favicon.ico             # Favicon voor de website
+├── .gitignore                   # Specificeert bestanden en mappen die Git moet negeren
+├── index.html                   # Het hoofd HTML-bestand (entry point voor Vite)
+├── package.json                 # Bevat project metadata, scripts en dependencies
+├── README.md                    # Deze documentatie
+└── 
 
 ---
 
@@ -283,17 +159,13 @@ Volg deze stappen om Filmder lokaal op te zetten en te draaien:
     ```
 
 2.  **Installeer dependencies:**
-    Zorg dat [Node.js](https://nodejs.org/) (wat npm bevat) geïnstalleerd is.
+    Zorg dat [Node.js](https://nodejs.org/) (inclusief npm) geïnstalleerd is op je systeem.
     ```bash
     npm install
     ```
 
-3.  **Configureer de API Sleutel:**
-    Maak een `.env` bestand aan in de root van het project (kopieer van `.env.example` als die bestaat) en voeg je TMDB API sleutel toe:
-    ```env
-    VITE_TMDB_API_KEY=jouw_unieke_tmdb_api_sleutel
-    ```
-    *Vraag een gratis API sleutel aan op [TMDB](https://www.themoviedb.org/settings/api).*
+3.  **API Sleutel:**
+    * De TMDB API sleutel die nodig is voor dit project is direct opgenomen in de broncode (`src/js/main.js` in de variabele `API_KEY`). Er is geen verdere configuratie van de API-sleutel nodig om het project lokaal uit te voeren.
 
 4.  **Start de ontwikkelingsserver:**
     ```bash
@@ -301,30 +173,24 @@ Volg deze stappen om Filmder lokaal op te zetten en te draaien:
     ```
 
 5.  **Open de applicatie:**
-    Open je browser en navigeer naar `http://localhost:5173` (of de poort die Vite aangeeft).
+    Open je browser en navigeer naar de lokale URL die Vite aangeeft.
 
 ---
 
 ## 📚 Bronnen & Erkenningen
 
-* **TMDB API:** Voor het leveren van de filmdata.
-* **MDN Web Docs:** Een onmisbare bron voor HTML, CSS, en JavaScript documentatie.
-* **Vite Documentation:** Voor informatie over de build tool.
-* *Eventuele andere tutorials, iconensets, lettertypes, etc. die je hebt gebruikt.*
-
-### AI Ondersteuning
-Voor dit project is gebruik gemaakt van AI-assistentie (zoals ChatGPT of Google Gemini) voor de volgende doeleinden:
-* Brainstormen over oplossingsrichtingen voor specifieke problemen.
+* **TMDB API:** Voor het leveren van alle film- en seriedata.
+* **MDN Web Docs:** Een essentiële en onmisbare bron voor HTML, CSS, en JavaScript documentatie en voorbeelden.
+* **Vite Documentation:** Voor informatie over de build tool en development server.
+* ### AI Ondersteuning
+Voor de ontwikkeling van dit project is gebruik gemaakt van AI-assistentie (Google Gemini) voor diverse aspecten, waaronder:
+* Brainstormen over oplossingsrichtingen voor specifieke programmeeruitdagingen.
 * Hulp bij het debuggen van JavaScript-code en het identificeren van logische fouten.
-* Genereren van boilerplate code of codefragmenten als startpunt.
-* Formuleren van comments en documentatie.
-* Advies over best practices en code optimalisaties.
-
-**Voorbeeld van interactie (conceptueel):**
-*Vraag aan AI:* "Hoe kan ik het beste de thema-wissel implementeren en opslaan in localStorage?"
-*Antwoord AI (samengevat):* "Gebruik een data-attribuut op de `<body>` tag. Sla de gekozen themawaarde ('light' of 'dark') op in localStorage. Bij het laden van de pagina, controleer localStorage en pas het thema toe. Voeg een event listener toe aan je thema-selectie-element om het thema bij te werken en de nieuwe waarde in localStorage op te slaan."
+* Genereren van codefragmenten en voorbeelden als startpunt voor implementaties.
+* Formuleren en structureren van commentaar in de code en documentatie (zoals deze README).
+* Advies over best practices in webontwikkeling, code-optimalisaties en toegankelijkheid.
 
 ---
 
-Gemaakt door Adil BENALI - Studentnummer [Jouw Studentnummer]
+Gemaakt door **Adil BENALI**
 Vak: Web Advanced - Academiejaar 2024-2025
