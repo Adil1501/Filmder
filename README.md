@@ -154,7 +154,7 @@ Volg deze stappen om Filmder lokaal op te zetten en te draaien:
 
 1.  **Clone de repository:**
     ```bash
-    git clone [https://github.com/jouw-gebruikersnaam/filmder.git](https://github.com/jouw-gebruikersnaam/filmder.git)
+    git clone [https://github.com/Adil1501/Filmder.git](https://github.com/jouw-gebruikersnaam/filmder.git)
     cd filmder
     ```
 
